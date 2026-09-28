@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reversing Autoimmune</title>
+<meta name="description" content="Why modern eating works against us, a step-by-step plan to turn it around, and what to put on your plate.">
+<style>
+  :root{
+    --bg:#FBF7EF; --card:#FFFFFF; --ink:#2B2A28; --muted:#6B6A63; --line:#D8D4C6;
+    --issue:#E24B4A; --issue-l:#FCEAE9;
+    --measure:#2E86C1; --measure-l:#E9F3FB;
+    --big:#D9861A; --big-l:#FCEEDA;
+    --small:#1D9E75; --small-l:#E3F5EE;
+    --heal:#5C9A1B; --heal-l:#EEF6E1;
+    --finetune:#7C5CBF; --finetune-l:#F0EBFA;
+    --earth:#8A6D3A;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);-webkit-text-size-adjust:100%;}
+  a{color:inherit;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px;}
+  p{margin:0 0 10px;}
+
+  /* Hero */
+  .hero{padding-top:28px;padding-bottom:18px;}
+  .home-link{display:inline-block;font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;margin-bottom:12px;}
+  .home-link:hover{color:var(--ink);}
+  .hero h1{font-size:clamp(26px,6vw,36px);margin:0 0 8px;letter-spacing:-0.5px;line-height:1.15;}
+  .hero p{color:var(--muted);font-size:15px;line-height:1.55;margin:0 0 8px;}
+  .hero .src{font-size:12px;color:var(--muted);}
+
+  /* Sticky nav */
+  .topnav{position:sticky;top:0;z-index:20;background:rgba(251,247,239,0.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topnav .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none;}
+  .topnav .wrap::-webkit-scrollbar{display:none;}
+  .topnav a{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-size:13px;font-weight:700;padding:7px 12px 7px 7px;border-radius:22px;background:var(--card);border:1px solid var(--line);white-space:nowrap;}
+  .topnav a .n{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;}
+  .topnav a.active{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);}
+  @media (max-width:480px){.topnav .long{display:none;} .topnav a{font-size:12.5px;padding-right:10px;} .topnav .wrap{gap:6px;}}
+  .n1{background:var(--issue);} .n2{background:var(--big);} .n3{background:var(--small);}
+
+  /* Contents */
+  .toc{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0 8px;}
+  .toc a{display:flex;gap:12px;align-items:flex-start;text-decoration:none;background:var(--card);border-radius:14px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+  .toc .n{flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;}
+  .toc b{display:block;font-size:15px;margin-bottom:2px;}
+  .toc span{font-size:12.5px;color:var(--muted);line-height:1.45;}
+  @media (min-width:680px){.toc{grid-template-columns:repeat(3,1fr);} .toc a{flex-direction:column;}}
+
+  /* Parts */
+  .part{scroll-margin-top:62px;padding-top:30px;}
+  .part-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--ink);}
+  .part-head .n{flex-shrink:0;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;}
+  .part-head h2{margin:0;font-size:clamp(20px,5vw,26px);line-height:1.2;}
+  .part-head small{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:2px;}
+
+  .card{background:var(--card);border-radius:16px;padding:20px 16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;}
+  @media (min-width:600px){.card{padding:22px 22px 20px;}}
+  .card-top{height:6px;margin:-20px -16px 16px;}
+  @media (min-width:600px){.card-top{margin:-22px -22px 18px;}}
+  .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:0.6px;font-weight:700;margin-bottom:4px;}
+  .card h3{font-size:19px;margin:0 0 6px;line-height:1.25;}
+  .lead{font-size:13.5px;color:var(--muted);line-height:1.6;margin:0 0 14px;}
+  .small-note{font-size:11px;color:var(--muted);line-height:1.5;}
+
+  /* ===== PART 1 ===== */
+  .tl-row{margin-bottom:4px;}
+  .tl-label{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:700;margin-bottom:4px;}
+  .tl-label span{font-weight:400;color:var(--muted);font-size:11.5px;text-align:right;}
+  .tl-bar{height:26px;border-radius:6px;display:flex;overflow:hidden;}
+  .tl-bar .main{flex:1;}
+  .tl-bar .tail{flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;white-space:nowrap;}
+  .tl-cap{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4;}
+  .tl-zoom{font-size:10.5px;color:var(--muted);text-align:right;margin:6px 0 10px;}
+  .tl-axis{position:relative;height:16px;font-size:10.5px;color:var(--muted);margin-top:3px;}
+  .tl-axis span{position:absolute;top:0;}
+
+  .eras{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px;}
+  @media (min-width:640px){.eras{grid-template-columns:1fr 1fr;}}
+  .era{border-radius:14px;padding:14px 14px 12px;display:flex;flex-direction:column;}
+  .era-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .era .when{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;}
+  .era h4{margin:0 0 8px;font-size:16px;}
+  .era .row{font-size:12px;line-height:1.45;margin:0 0 7px;}
+  .era .row b{font-size:9.5px;text-transform:uppercase;letter-spacing:0.4px;color:var(--muted);display:block;}
+  .meters{margin-top:auto;padding-top:10px;border-top:1px solid rgba(0,0,0,0.08);}
+  .meter{display:grid;grid-template-columns:88px 1fr;align-items:center;gap:8px;margin-top:6px;font-size:10.5px;font-weight:700;color:var(--muted);}
+  .meter .track{height:8px;border-radius:5px;background:rgba(0,0,0,0.07);overflow:hidden;}
+  .meter .fill{height:100%;border-radius:5px;}
+  .fill.work{background:var(--heal);} .fill.carb{background:var(--big);}
+  .era.hg{background:#F3EEE2;} .era.hg .when,.era.hg h4{color:#6B5220;}
+  .era.farm{background:var(--big-l);} .era.farm .when,.era.farm h4{color:#7A4A0C;}
+  .era.fac{background:var(--measure-l);} .era.fac .when,.era.fac h4{color:#0F4C77;}
+  .era.desk{background:var(--issue-l);box-shadow:inset 0 0 0 2px var(--issue);} .era.desk .when,.era.desk h4{color:#8C2321;}
+  .fit{display:inline-block;align-self:flex-start;margin-top:10px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:#FFFFFF;text-decoration:none;}
+  .fit.ok{color:#3E6512;} .fit.bad{color:#8C2321;}
+
+  .fatx-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  @media (min-width:600px){.fatx-grid{grid-template-columns:190px 1fr;} .fcard.vis{grid-column:1 / -1;}}
+  .fatx-body{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#F6F2E8;border-radius:12px;padding:12px;}
+  .fatx-body .cap{font-size:10.5px;color:var(--muted);text-align:center;margin-top:6px;line-height:1.45;}
+  .fcard{border-radius:12px;padding:14px;}
+  .fcard .kind{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;}
+  .fcard h4{margin:0 0 6px;font-size:16px;}
+  .fcard p{font-size:12.5px;line-height:1.5;margin:0 0 8px;}
+  .fcard.sub{background:#FFF6E8;} .fcard.sub .kind,.fcard.sub h4{color:#8A5A16;} .fcard.sub p{color:#6B5220;}
+  .fcard.vis{background:var(--issue-l);box-shadow:inset 0 0 0 2px var(--issue);} .fcard.vis .kind,.fcard.vis h4{color:#8C2321;} .fcard.vis p{color:#5E2A26;}
+  .verdict{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:#FFFFFF;}
+  .fx-list{display:grid;grid-template-columns:1fr;gap:8px;margin:6px 0 10px;}
+  @media (min-width:520px){.fx-list{grid-template-columns:1fr 1fr;}}
+  .fx{background:#FFFFFF;border-radius:10px;padding:9px 11px;font-size:12px;line-height:1.45;color:#5E2A26;}
+  .fx b{display:block;font-size:12.5px;color:#8C2321;margin-bottom:1px;}
+  .fx-chain{font-size:12px;font-weight:700;color:#8C2321;background:#FFFFFF;border-radius:10px;padding:9px 11px;line-height:1.5;}
+  .fx-chain span{color:var(--muted);font-weight:400;}
+  .research{margin-top:10px;display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.5;color:#5E2A26;}
+  .research svg{flex-shrink:0;margin-top:2px;}
+
+  .ask{background:var(--ink);color:#FBF7EF;border-radius:14px;padding:18px;margin-bottom:12px;}
+  .ask .q{font-size:clamp(17px,4.5vw,20px);font-weight:700;line-height:1.4;margin-bottom:10px;}
+  .ask .q span{color:#F2B45A;}
+  .ask .a{font-size:12.5px;color:#D8D4C6;line-height:1.55;margin:0;}
+  .ask a.next{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:700;color:#F2B45A;text-decoration:none;}
+
+  /* ===== PART 2 ===== */
+  .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:22px;padding:0 7px;border-radius:11px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:0.2px;margin-right:8px;vertical-align:middle;}
+  .step-link{display:flex;justify-content:center;margin:-6px 0 10px;}
+  .icon-wrap{display:flex;justify-content:center;margin:4px 0 10px;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;}
+  .chip{font-size:11px;font-weight:700;padding:5px 9px;border-radius:20px;background:var(--issue-l);color:#8C2321;}
+  .chip.gray{background:#F1EFE8;color:#5F5E5A;}
+  .divider{height:1px;background:var(--line);margin:4px 0 14px;}
+  .mini-label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;margin-bottom:7px;}
+  .mini-caption{font-size:11.5px;color:var(--muted);line-height:1.4;margin:-4px 0 12px;}
+  .callout{border-radius:10px;padding:11px 12px;display:flex;gap:9px;align-items:flex-start;margin-bottom:12px;}
+  .callout svg{flex-shrink:0;margin-top:2px;}
+  .callout p{margin:0;font-size:12px;line-height:1.5;}
+  .callout.warn{background:var(--big-l);} .callout.warn p{color:#7A4A0C;}
+  .callout.goal{background:var(--heal-l);} .callout.goal p{color:#3E6512;}
+  .callout.purple{background:var(--finetune-l);} .callout.purple p{color:#4A3574;}
+  .callout.red{background:var(--issue-l);} .callout.red p{color:#8C2321;}
+  .conds{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 12px;}
+  @media (min-width:560px){.conds{grid-template-columns:1fr 1fr;}}
+  .cond{border-radius:12px;padding:10px 12px;background:#F6F2E8;}
+  .cond b{display:block;font-size:13.5px;margin-bottom:2px;}
+  .cond span{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;}
+  .cond.ai{background:var(--issue-l);} .cond.ai b{color:#8C2321;}
+  .cond.dm{background:var(--big-l);} .cond.dm b{color:#7A4A0C;}
+  .cond.ht{background:var(--measure-l);} .cond.ht b{color:#0F4C77;}
+  .cond.lv{background:#F3EEE2;} .cond.lv b{color:#6B5220;}
+  .cond.gi{background:var(--finetune-l);} .cond.gi b{color:#4A3574;}
+  @media (min-width:560px){.conds .cond:last-child:nth-child(odd){grid-column:1 / -1;}}
+  .thread{background:var(--heal-l);border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;color:#3E6512;margin:0 0 14px;}
+  .sub-h{font-size:13px;font-weight:700;color:#8C2321;margin:0 0 8px;}
+  .pivot{background:var(--ink);color:#FBF7EF;border-radius:10px;padding:12px;font-size:13px;font-weight:700;text-align:center;}
+
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media (min-width:560px){.metric-grid{grid-template-columns:repeat(3,1fr);}}
+  .metric{background:var(--measure-l);border-radius:10px;padding:10px 6px 8px;text-align:center;}
+  .metric svg{display:block;margin:0 auto;}
+  .metric span{display:block;font-size:12px;font-weight:700;margin-top:2px;color:#0F4C77;}
+  .metric small{display:block;font-size:10.5px;color:var(--muted);}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:2px 0 12px;font-size:11.5px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 14px;}
+  .fchip{font-size:11.5px;font-weight:700;padding:7px 10px;border-radius:8px;background:#F1EFE8;color:#5F5E5A;border:1.5px solid #B4B2A9;line-height:1.25;}
+  .fchip small{display:block;font-weight:400;font-size:10px;}
+  .fchip.carb{background:var(--big-l);color:#7A4A0C;border-color:var(--big);}
+  .fchip.vis{background:var(--issue-l);color:#8C2321;border-color:var(--issue);}
+  .farr{color:#B4B2A9;font-weight:700;}
+  .knob-label{font-size:12px;font-weight:700;margin:4px 0 8px;}
+  .knob{border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+  .knob svg{flex-shrink:0;}
+  .knob h4{margin:0 0 4px;font-size:15px;}
+  .knob p{margin:0;font-size:12px;line-height:1.5;}
+  .knob.orange{background:var(--big-l);} .knob.orange h4{color:#7A4A0C;} .knob.orange p{color:#8A5A16;}
+  .knob.teal{background:var(--small-l);} .knob.teal h4{color:#0B5C46;} .knob.teal p{color:#3C7A69;}
+  .knob.blue{background:var(--measure-l);} .knob.blue h4{color:#0F4C77;} .knob.blue p{color:#1F5C8A;}
+  .food-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 14px;}
+  .food-card{background:var(--small-l);border-radius:10px;padding:9px 6px 7px;text-align:center;}
+  .food-card svg{display:block;margin:0 auto;}
+  .food-card span{display:block;font-size:11.5px;font-weight:700;margin-top:3px;color:#0B5C46;}
+  .food-card small{display:block;font-size:10px;color:var(--muted);line-height:1.3;}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:var(--heal-l);color:#3E6512;}
+  .quote{background:var(--card);border-left:5px solid var(--big);border-radius:0 12px 12px 0;padding:16px 18px;font-size:13.5px;line-height:1.6;margin-bottom:16px;}
+  .quote b{color:var(--big);}
+
+  /* ===== PART 3 ===== */
+  .theme-banner{background:var(--big-l);border-radius:14px;padding:16px;margin:0 0 16px;text-align:center;}
+  .theme-banner .big{font-size:clamp(19px,5vw,24px);font-weight:700;color:#7A4A0C;margin:0 0 6px;}
+  .theme-banner .sub{font-size:12.5px;color:#8A5A16;margin:0;line-height:1.5;}
+  .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 auto 16px;max-width:460px;}
+  .stat-card{background:var(--card);border:2px solid var(--big);border-radius:12px;padding:12px 8px;text-align:center;}
+  .stat-card .num{font-size:clamp(19px,5.5vw,24px);font-weight:700;color:#7A4A0C;}
+  .stat-card .lbl{font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .subhead{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;margin:20px 0 10px;}
+  .subhead .swatch{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .col-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin:0 0 8px;}
+  .surprise-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px;margin:0 0 6px;}
+  .surprise-card{background:var(--issue-l);border-radius:12px;padding:12px 6px 10px;text-align:center;}
+  .surprise-card svg{display:block;margin:0 auto 4px;}
+  .surprise-card .food{font-size:12px;font-weight:700;}
+  .surprise-card .serving{font-size:10px;color:var(--muted);}
+  .surprise-card .carbnum{font-size:20px;font-weight:700;color:#8C2321;margin-top:4px;}
+  .surprise-card .pct{font-size:10px;font-weight:700;color:#A13C2E;background:#FFFFFF;border-radius:10px;padding:2px 6px;display:inline-block;margin-top:3px;}
+  .food-grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;}
+  .food-card2{background:var(--small-l);border-radius:10px;padding:10px 6px 8px;text-align:center;}
+  .food-card2 svg{display:block;margin:0 auto;}
+  .food-card2 span{display:block;font-size:12px;font-weight:700;margin-top:4px;color:#0B5C46;}
+  .food-card2 small{display:block;font-size:10.5px;color:var(--muted);margin-top:1px;line-height:1.3;}
+  .food-card2.nonveg{background:var(--measure-l);} .food-card2.nonveg span{color:#0F4C77;}
+  .two-col{display:grid;grid-template-columns:1fr;gap:18px;}
+  @media (min-width:700px){.two-col{grid-template-columns:1fr 1fr;}}
+  .avoid-label{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14px;font-weight:700;margin-bottom:8px;}
+  .avoid-list{display:flex;flex-direction:column;gap:8px;}
+  .avoid-item{display:flex;align-items:center;gap:10px;border-radius:10px;padding:10px 12px;}
+  .avoid-item.no{background:var(--issue-l);} .avoid-item.mod{background:var(--big-l);}
+  .avoid-item svg{flex-shrink:0;}
+  .avoid-item .t{font-size:13px;font-weight:700;display:block;}
+  .avoid-item .s{font-size:11.5px;display:block;margin-top:1px;line-height:1.4;}
+  .avoid-item.no .t{color:#8C2321;} .avoid-item.no .s{color:#A13C2E;}
+  .avoid-item.mod .t{color:#7A4A0C;} .avoid-item.mod .s{color:#8A5A16;}
+  .ptag{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;}
+  .ptag.always{background:var(--issue-l);color:#8C2321;} .ptag.maint{background:var(--big-l);color:#7A4A0C;}
+  .meal-tier{font-size:14px;font-weight:700;margin:14px 0 10px;}
+  .meal-plan-card{background:var(--big-l);border-radius:14px;padding:14px 14px 10px;}
+  .meal-plan-card.nonveg{background:var(--measure-l);}
+  .meal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .meal-head .who{font-size:14px;font-weight:700;}
+  .meal-total{font-size:11.5px;font-weight:700;background:#FFFFFF;border-radius:20px;padding:3px 10px;color:#7A4A0C;}
+  .meal-plan-card.nonveg .meal-total{color:#0F4C77;}
+  .meal-row{display:flex;gap:8px;padding:8px 0;border-top:1px solid rgba(0,0,0,0.07);}
+  .meal-head + .meal-row{border-top:none;}
+  .meal-time{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--muted);width:64px;flex-shrink:0;padding-top:2px;}
+  .meal-desc{font-size:12.5px;flex:1;line-height:1.4;}
+  .meal-carb{font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0;}
+  .fast-bar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:4px 0 0;}
+  .fast-bar .seg{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;}
+  .fast-bar .fast{background:var(--ink);} .fast-bar .eat{background:var(--small);}
+  .fast-axis{position:relative;height:18px;font-size:11px;color:var(--muted);margin:3px 0 12px;}
+  .fast-axis span{position:absolute;top:0;}
+  .fast-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 10px;}
+  @media (min-width:560px){.fast-grid{grid-template-columns:1fr 1fr;}}
+  .fx-card{background:#F1EFE8;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.45;color:var(--muted);}
+  .fx-card b{display:block;font-size:13px;color:var(--ink);margin-bottom:2px;}
+  .fast-how{background:var(--small-l);border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;color:#0B5C46;}
+  .note{margin-top:16px;background:#F1EFE8;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.55;display:flex;gap:8px;align-items:flex-start;}
+  .note svg{flex-shrink:0;margin-top:3px;}
+
+  /* Footer */
+  footer{margin-top:30px;padding:18px 0 40px;border-top:1px solid var(--line);}
+  footer .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:10px;}
+  .videos{display:grid;grid-template-columns:1fr;gap:8px;}
+  @media (min-width:640px){.videos{grid-template-columns:1fr 1fr;}}
+  .video{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-decoration:none;min-height:48px;}
+  .video:hover,.video:focus-visible{border-color:var(--issue);}
+  .video{scroll-margin-top:70px;}
+  .video .vnum{flex-shrink:0;font-size:12px;font-weight:800;color:#FFFFFF;background:var(--ink);border-radius:6px;padding:3px 6px;letter-spacing:0.3px;}
+  .video:target{border-color:var(--issue);box-shadow:0 0 0 2px var(--issue-l);}
+  .vref{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--finetune);border-radius:12px;padding:10px 12px;margin:0 0 12px;text-decoration:none;}
+  .vref .vnum{flex-shrink:0;font-size:12px;font-weight:800;color:#FFFFFF;background:var(--finetune);border-radius:6px;padding:3px 6px;}
+  .vref span.t{font-size:12.5px;line-height:1.4;color:var(--ink);}
+  .vref span.t small{display:block;color:var(--muted);font-size:11px;}
+  .video .play{width:28px;height:28px;border-radius:50%;background:var(--issue);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .video .vt{flex:1;min-width:0;font-size:12px;color:var(--muted);line-height:1.35;}
+  .video .vt b{display:block;font-size:13.5px;color:var(--ink);}
+  .video .vm{flex-shrink:0;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;}
+  .disclaimer{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.55;}
+  .top-link{display:inline-block;margin-top:14px;font-size:12.5px;font-weight:700;text-decoration:none;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header class="wrap hero" id="top">
+  <a class="home-link" href="index.html">← Home</a>
+  <h1>Reversing autoimmune</h1>
+  <p>A visual guide: why modern eating works against us, a step-by-step plan to turn it around, and what to actually put on your plate.</p>
+  <div class="src">Compiled Aug 2026 · updated Sep 2026</div>
+</header>
+
+<nav class="topnav" aria-label="Sections">
+  <div class="wrap">
+    <a href="#mismatch"><span class="n n1">1</span>Mismatch<span class="long">&nbsp;→ Fat → Issues</span></a>
+    <a href="#plan"><span class="n n2">2</span>The Plan</a>
+    <a href="#food"><span class="n n3">3</span>Food choices</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <div class="toc">
+    <a href="#mismatch"><span class="n n1">1</span><div><b>Work–food mismatch → fat → issues</b><span>How our work changed but our plate didn't, and why the excess fat matters.</span></div></a>
+    <a href="#plan"><span class="n n2">2</span><div><b>The plan</b><span>Measure your baseline, turn the big knobs, fine-tune, and let the body recalibrate.</span></div></a>
+    <a href="#food"><span class="n n3">3</span><div><b>Food choices</b><span>What to eat, what to moderate, what to avoid, plus example days.</span></div></a>
+  </div>
+
+  <!-- ================= PART 1 ================= -->
+  <section class="part" id="mismatch">
+    <div class="part-head"><span class="n n1">1</span><h2>Work–food mismatch → fat → issues<small>Why carbs are the big knob</small></h2></div>
+
+    <div class="card">
+      <div class="card-top" style="background:linear-gradient(90deg,var(--earth),var(--big),var(--measure),var(--issue));"></div>
+      <div class="tag" style="color:var(--earth);"><span class="step-num" style="background:var(--earth);">1.1</span>The mismatch</div>
+      <h3>Our work changed. Our plate didn't.</h3>
+      <p class="lead">For almost all of human history we were hunter-gatherers. Grains arrived with farming only ~10,000 years ago, and for most of the time since, they fuelled long days of hard physical work in fields and later factories. In the last ~50 years, many city jobs moved to a desk. The fuel stayed the same; the work didn't.</p>
+
+      <div class="tl-row">
+        <div class="tl-label">Hunter-gatherers<span>~2.5 million years</span></div>
+        <div class="tl-bar"><div class="main" style="background:#D8C7A0;"></div><div class="tail" style="width:max(6px,0.4%);background:var(--big);"></div></div>
+        <div class="tl-cap">Meat, fish, eggs, fruit, vegetables, nuts. Farming is only the last 0.4% →</div>
+      </div>
+      <div class="tl-zoom">▼ zoom into that sliver</div>
+      <div class="tl-row">
+        <div class="tl-label">Farmers<span>last ~10,000 years</span></div>
+        <div class="tl-bar"><div class="main" style="background:#F0BE72;"></div><div class="tail" style="width:max(8px,2.5%);background:var(--measure);"></div></div>
+        <div class="tl-cap">Grains become the staple (wheat, rice, millet) and people settle in villages.</div>
+      </div>
+      <div class="tl-zoom">▼ zoom again</div>
+      <div class="tl-row">
+        <div class="tl-label">Industrial age<span>last ~250 years</span></div>
+        <div class="tl-bar"><div class="main" style="background:var(--measure);"></div><div class="tail" style="width:20%;background:var(--issue);">Desk</div></div>
+        <div class="tl-axis"><span style="left:0;">~1770s</span><span style="left:80%;transform:translateX(-50%);">~1970s</span><span style="right:0;">today</span></div>
+        <div class="tl-cap">Mills, mines and factories: long, physical shifts. Cars then replace walking, cycling and carrying loads, so even getting to work takes less effort. In the last ~50 years, desks and screens on top.</div>
+      </div>
+
+      <div class="eras">
+        <div class="era hg">
+          <div class="era-top"><div><div class="when">~2.5M → 10,000 yrs ago</div><h4>Hunter-gatherer</h4></div>
+            <svg width="54" height="46" viewBox="0 0 64 54" aria-hidden="true"><line x1="6" y1="48" x2="44" y2="8" stroke="#8A6D3A" stroke-width="3" stroke-linecap="round"/><polygon points="44,8 50,1 48,11" fill="#6B5220"/><ellipse cx="46" cy="40" rx="11" ry="6" fill="#E8896B"/><polygon points="35,40 29,35 29,45" fill="#E8896B"/><circle cx="52" cy="38.5" r="1.2" fill="#7A2A15"/><circle cx="16" cy="18" r="6" fill="#C0392B"/><path d="M16 12 Q18 8 21 9" stroke="#3B6D11" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+          <p class="row"><b>Work</b>Walking, tracking, hunting, foraging: on the move most days.</p>
+          <p class="row"><b>Plate</b>Meat, fish, eggs, fruit, vegetables, nuts. Carbs mostly seasonal.</p>
+          <p class="row"><b>Fasting</b>Frequent, unplanned fasting: food and water weren't always there.</p>
+          <div class="meters">
+            <div class="meter">Physical work<div class="track"><div class="fill work" style="width:85%"></div></div></div>
+            <div class="meter">Grain / carb<div class="track"><div class="fill carb" style="width:22%"></div></div></div>
+          </div>
+          <span class="fit ok">✓ Fuel matches work</span>
+        </div>
+        <div class="era farm">
+          <div class="era-top"><div><div class="when">~10,000 yrs ago →</div><h4>Farmer</h4></div>
+            <svg width="46" height="46" viewBox="0 0 54 54" aria-hidden="true"><line x1="27" y1="52" x2="27" y2="10" stroke="#B07A1E" stroke-width="2.4" stroke-linecap="round"/><g fill="#D9A441"><ellipse cx="22" cy="14" rx="3.2" ry="6" transform="rotate(-25 22 14)"/><ellipse cx="32" cy="14" rx="3.2" ry="6" transform="rotate(25 32 14)"/><ellipse cx="22" cy="25" rx="3.2" ry="6" transform="rotate(-25 22 25)"/><ellipse cx="32" cy="25" rx="3.2" ry="6" transform="rotate(25 32 25)"/><ellipse cx="22" cy="36" rx="3.2" ry="6" transform="rotate(-25 22 36)"/><ellipse cx="32" cy="36" rx="3.2" ry="6" transform="rotate(25 32 36)"/><ellipse cx="27" cy="6" rx="3" ry="5.5"/></g></svg></div>
+          <p class="row"><b>Work</b>Dawn-to-dusk ploughing, sowing, harvesting by hand.</p>
+          <p class="row"><b>Plate</b>Grains become the staple (wheat, rice, millet) plus what the farm grows.</p>
+          <div class="meters">
+            <div class="meter">Physical work<div class="track"><div class="fill work" style="width:90%"></div></div></div>
+            <div class="meter">Grain / carb<div class="track"><div class="fill carb" style="width:72%"></div></div></div>
+          </div>
+          <span class="fit ok">✓ Fuel matches work</span>
+        </div>
+        <div class="era fac">
+          <div class="era-top"><div><div class="when">~1770s →</div><h4>Factory worker</h4></div>
+            <svg width="54" height="44" viewBox="0 0 66 54" aria-hidden="true"><rect x="46" y="6" width="8" height="30" fill="#0F4C77"/><path d="M4 52 V28 L18 20 V28 L32 20 V28 L46 20 V52 Z" fill="#2E86C1"/><rect x="46" y="30" width="16" height="22" fill="#2E86C1"/><rect x="10" y="36" width="6" height="6" fill="#E9F3FB"/><rect x="24" y="36" width="6" height="6" fill="#E9F3FB"/><rect x="38" y="36" width="6" height="6" fill="#E9F3FB"/></svg></div>
+          <p class="row"><b>Work</b>10–14 hour shifts of heavy labour in mills, mines &amp; factories.</p>
+          <p class="row"><b>Plate</b>Cheap bread, rice, sugar: dense, affordable fuel for hard work.</p>
+          <div class="meters">
+            <div class="meter">Physical work<div class="track"><div class="fill work" style="width:85%"></div></div></div>
+            <div class="meter">Grain / carb<div class="track"><div class="fill carb" style="width:80%"></div></div></div>
+          </div>
+          <span class="fit ok">✓ Fuel matches work</span>
+        </div>
+        <div class="era desk">
+          <div class="era-top"><div><div class="when">Last ~50 years</div><h4>City desk job</h4></div>
+            <svg width="54" height="44" viewBox="0 0 66 54" aria-hidden="true"><rect x="12" y="4" width="42" height="28" rx="3" fill="#8C2321"/><rect x="15" y="7" width="36" height="22" rx="1.5" fill="#FCEAE9"/><rect x="30" y="32" width="6" height="7" fill="#8C2321"/><rect x="22" y="39" width="22" height="3" rx="1.5" fill="#8C2321"/><rect x="4" y="44" width="58" height="3" rx="1.5" fill="#B4B2A9"/><path d="M24 22 L30 16 L35 20 L42 12" fill="none" stroke="#E24B4A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p class="row"><b>Work</b>Desk, screens and a car commute: hours of sitting, little walking.</p>
+          <p class="row"><b>Plate</b>Still grain-heavy, now plus refined flour, sugar &amp; packaged snacks.</p>
+          <div class="meters">
+            <div class="meter">Physical work<div class="track"><div class="fill work" style="width:20%"></div></div></div>
+            <div class="meter">Grain / carb<div class="track"><div class="fill carb" style="width:88%"></div></div></div>
+          </div>
+          <a class="fit bad" href="#fat">✗ Fuel ≫ work → stored as fat ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="fat" style="scroll-margin-top:62px;">
+      <div class="card-top" style="background:var(--issue);"></div>
+      <div class="tag" style="color:var(--issue);"><span class="step-num" style="background:var(--issue);">1.2</span>The fat</div>
+      <h3>"Stored as fat", but where it goes matters</h3>
+      <p class="lead">Excess carb raises insulin, and insulin tells the body to store the surplus as fat. That fat lands in two very different places: one mostly harmless, one that behaves like an active, trouble-making organ.</p>
+      <div class="fatx-grid">
+        <div class="fatx-body">
+          <svg width="140" height="178" viewBox="0 0 150 190" role="img" aria-label="Torso cross-section: subcutaneous fat under the skin, visceral fat packed around the organs">
+            <circle cx="75" cy="22" r="17" fill="#F0C39B"/>
+            <path d="M22 186 C18 120 26 62 46 50 H104 C124 62 132 120 128 186 Z" fill="#F6D9A8"/>
+            <path d="M32 180 C29 124 36 70 52 60 H98 C114 70 121 124 118 180 Z" fill="#F0C39B"/>
+            <ellipse cx="62" cy="96" rx="20" ry="12" fill="#A0522D"/>
+            <text x="62" y="99" text-anchor="middle" font-size="8" fill="#FFF" font-weight="700">liver</text>
+            <ellipse cx="94" cy="104" rx="11" ry="6" fill="#C98A5A"/>
+            <path d="M50 132 q10 -10 20 0 q10 10 20 0 q10 -10 18 0 M50 150 q10 -10 20 0 q10 10 20 0 q10 -10 18 0" fill="none" stroke="#C77B5E" stroke-width="5" stroke-linecap="round"/>
+            <g fill="#E24B4A" opacity="0.8"><circle cx="46" cy="118" r="6"/><circle cx="80" cy="118" r="6.5"/><circle cx="104" cy="122" r="6"/><circle cx="60" cy="141" r="5.5"/><circle cx="96" cy="141" r="6"/><circle cx="76" cy="164" r="6.5"/><circle cx="50" cy="164" r="5"/><circle cx="102" cy="162" r="5.5"/><circle cx="84" cy="84" r="5"/></g>
+          </svg>
+          <div class="cap"><b style="color:#8A5A16;">Tan layer</b> = subcutaneous (under skin)<br><b style="color:#E24B4A;">Red</b> = visceral (around organs)</div>
+        </div>
+
+        <div class="fcard sub">
+          <div class="kind">Under the skin</div>
+          <h4>Subcutaneous fat</h4>
+          <p>The soft, pinchable layer on hips, thighs, arms and belly. Mostly a passive fuel store and insulation. Cosmetically annoying, but relatively low metabolic risk.</p>
+          <span class="verdict" style="color:#8A5A16;">Not the priority</span>
+          <p style="margin:12px 0 0;padding-top:10px;border-top:1px solid rgba(0,0,0,0.08);"><b>Quick check for visceral fat:</b> a waist (at the navel) more than half your height is a common warning sign. A DEXA scan measures it directly.</p>
+        </div>
+
+        <div class="fcard vis">
+          <div class="kind">Deep in the belly</div>
+          <h4>Visceral fat: an active organ, not just storage</h4>
+          <p>Packed around the liver, pancreas, intestines and heart. You can't pinch it; a growing waistline is the clue. It doesn't just sit there. It constantly releases fat and chemical signals into the blood.</p>
+          <div class="fx-list">
+            <div class="fx"><b>Floods the liver</b>Drains straight to the liver, pushing fat into it → fatty liver.</div>
+            <div class="fx"><b>Blocks insulin</b>Makes cells deaf to insulin → the body makes even more insulin → more fat stored.</div>
+            <div class="fx"><b>Scrambles hormones</b>Lowers protective hormones (adiponectin) and upsets appetite and stress signalling.</div>
+            <div class="fx"><b>Leaks inflammation</b>Releases inflammatory messengers (e.g. IL-6, TNF-α) → constant low-grade inflammation body-wide.</div>
+          </div>
+          <div class="fx-chain">Chronic inflammation keeps the immune system on alert <span>— a plausible fuel for autoimmune flare-ups. That's why Step #0 targets visceral fat first.</span></div>
+          <div class="research">
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#8C2321" stroke-width="1.4"/><line x1="9.3" y1="9.3" x2="13" y2="13" stroke="#8C2321" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span><b style="color:#8C2321;">An active research area.</b> Visceral fat's links to diabetes, fatty liver and heart disease are well established; its wider impact on immunity, autoimmune conditions, brain health and more is still being actively studied.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ask">
+      <div class="q">Our work changed in 50 years. Our plate didn't.<br><span>Shouldn't we adjust what we eat to how we work?</span></div>
+      <p class="a">Grains fuelled thousands of years of hard physical labour; they weren't the problem then. For many desk-bound city jobs, that fuel has nowhere to go and gets stored as fat. That mismatch is why cutting carbs is Knob 1.</p>
+      <a class="next" href="#plan">Next: the plan →</a>
+    </div>
+    <p class="small-note">Dates are approximate: the genus <i>Homo</i> is roughly 2–3 million years old; farming began ~10,000–12,000 years ago (earlier in some regions, later in others); the industrial revolution started in Britain in the late 1700s and spread over the next century. "Last ~50 years" is a rough, global figure. In the US, for example, in 1960 nearly half of private-sector jobs needed at least moderate physical activity; by 2008 fewer than 20% did (Church et al., PLoS One, 2011). In many fast-growing economies the shift to desk work came later, often within the last 25–30 years. Hunter-gatherer diets varied widely (some groups ate plenty of tubers, honey or wild grains), so the point isn't "zero carbs"; it's matching fuel to the work you actually do. Work / carb bars are illustrative, not measured.</p>
+  </section>
+
+  <!-- ================= PART 2 ================= -->
+  <section class="part" id="plan">
+    <div class="part-head"><span class="n n2">2</span><h2>The plan<small>Measure your baseline, turn the big knobs, then fine-tune</small></h2></div>
+
+    <!-- Step 1 -->
+    <div class="card">
+      <div class="card-top" style="background:var(--issue);"></div>
+      <div class="tag" style="color:var(--issue);"><span class="step-num" style="background:var(--issue);">2.1</span>Start here</div>
+      <h3>Where are you starting from?</h3>
+      <p class="lead">This plan is built around autoimmune conditions, but the same levers apply to several common metabolic problems. You may be dealing with one or more of these:</p>
+      <div class="conds">
+        <div class="cond ai"><b>Autoimmune</b><span>Vitiligo, MS, rheumatoid arthritis, celiac, Hashimoto's and more</span></div>
+        <div class="cond dm"><b>Prediabetes / type 2 diabetes</b><span>Rising blood sugar, high HbA1c, insulin resistance</span></div>
+        <div class="cond ht"><b>Heart issues</b><span>High blood pressure, high triglycerides, poor cholesterol profile</span></div>
+        <div class="cond gi"><b>Gut issues: IBS</b><span>Bloating, cramps, irregular bowels, food sensitivities</span></div>
+        <div class="cond lv"><b>Fatty liver &amp; belly weight</b><span>Raised liver enzymes, a growing waistline, and more</span></div>
+      </div>
+      <div class="thread"><b>The common thread:</b> many of these share the same roots: excess carb, insulin resistance and visceral fat (<a href="#fat">see part 1</a>). Turning the same knobs can help more than one at once.</div>
+      <div class="callout warn">
+        <svg width="16" height="14" viewBox="0 0 16 14" aria-hidden="true"><path d="M8 1 L15 13 L1 13 Z" fill="none" stroke="#BA7517" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6" x2="8" y2="9.5" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.3" r="0.9" fill="#BA7517"/></svg>
+        <p><b>On diabetes or blood-pressure medication?</b> Cutting carbs can lower blood sugar and blood pressure quickly, so doses may need adjusting. Work with your doctor before and during the change.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="sub-h">If you're here for autoimmune</div>
+      <p class="lead" style="font-size:12.5px;">The immune system attacks the body's own cells: skin, nerves, joints, gut, thyroid and more. No single condition, no single cause.</p>
+      <div class="chips">
+        <span class="chip">Skin · Vitiligo</span><span class="chip">Nerves · MS</span><span class="chip">Joints · RA</span><span class="chip">Gut · Celiac</span><span class="chip">Thyroid · Hashimoto's</span><span class="chip">+ more</span>
+      </div>
+      <div class="divider"></div>
+      <div class="mini-label"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="#6B6A63" stroke-width="1.6"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="#6B6A63" stroke-width="1.6" stroke-linecap="round"/></svg>Suspected causes</div>
+      <div class="chips"><span class="chip gray">Environmental</span><span class="chip gray">Diet</span><span class="chip gray">Hereditary</span></div>
+      <p class="mini-caption">No one can pinpoint exactly which combination.</p>
+      <div class="mini-label"><svg width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><rect x="1" y="1" width="14" height="8" rx="4" fill="none" stroke="#6B6A63" stroke-width="1.4"/><line x1="8" y1="1" x2="8" y2="9" stroke="#6B6A63" stroke-width="1.2"/></svg>Current medical response</div>
+      <div class="chips"><span class="chip gray">Steroids: oral / topical</span><span class="chip gray">Immunosuppressants, e.g. JAK inhibitors</span></div>
+      <p class="mini-caption">Slow or stop an overactive immune system.</p>
+      <div class="callout warn">
+        <svg width="16" height="14" viewBox="0 0 16 14" aria-hidden="true"><path d="M8 1 L15 13 L1 13 Z" fill="none" stroke="#BA7517" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6" x2="8" y2="9.5" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.3" r="0.9" fill="#BA7517"/></svg>
+        <p>Suppressing immunity can let other diseases, minor to major, take hold. Most people with tolerable symptoms just live with it.</p>
+      </div>
+      <div class="pivot">Genes are fixed. Diet &amp; environment aren't ↓</div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="card">
+      <div class="card-top" style="background:var(--measure);"></div>
+      <div class="tag" style="color:var(--measure);"><span class="step-num" style="background:var(--measure);">2.2</span>Know your baseline</div>
+      <h3>Measure</h3>
+      <p class="lead">Test before you tune, so you can see the knobs actually working.</p>
+      <div class="metric-grid">
+        <div class="metric"><svg width="50" height="33" viewBox="0 0 60 40" aria-hidden="true"><path d="M6 34 A24 24 0 0 1 54 34" fill="none" stroke="#CFE2F5" stroke-width="5" stroke-linecap="round"/><path d="M6 34 A24 24 0 0 1 38 13" fill="none" stroke="#2E86C1" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="34" x2="40" y2="17" stroke="#2B2A28" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="34" r="3" fill="#2B2A28"/></svg><span>HbA1c</span><small>3-mo blood sugar avg</small></div>
+        <div class="metric"><svg width="50" height="33" viewBox="0 0 60 40" aria-hidden="true"><path d="M6 34 A24 24 0 0 1 54 34" fill="none" stroke="#CFE2F5" stroke-width="5" stroke-linecap="round"/><path d="M6 34 A24 24 0 0 1 30 10" fill="none" stroke="#2E86C1" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="34" x2="32" y2="11" stroke="#2B2A28" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="34" r="3" fill="#2B2A28"/></svg><span>Vitamin D / B12</span><small>hormone &amp; nerve fn</small></div>
+        <div class="metric"><svg width="50" height="33" viewBox="0 0 60 40" aria-hidden="true"><path d="M6 34 A24 24 0 0 1 54 34" fill="none" stroke="#CFE2F5" stroke-width="5" stroke-linecap="round"/><path d="M6 34 A24 24 0 0 1 46 15" fill="none" stroke="#2E86C1" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="34" x2="46" y2="20" stroke="#2B2A28" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="34" r="3" fill="#2B2A28"/></svg><span>Liver panel</span><small>ALT / AST, fatty liver</small></div>
+        <div class="metric"><svg width="50" height="33" viewBox="0 0 60 40" aria-hidden="true"><path d="M6 34 A24 24 0 0 1 54 34" fill="none" stroke="#CFE2F5" stroke-width="5" stroke-linecap="round"/><path d="M6 34 A24 24 0 0 1 22 11" fill="none" stroke="#2E86C1" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="34" x2="23" y2="12" stroke="#2B2A28" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="34" r="3" fill="#2B2A28"/></svg><span>Kidney panel</span><small>creatinine, eGFR</small></div>
+        <div class="metric"><svg width="50" height="33" viewBox="0 0 60 40" aria-hidden="true"><path d="M6 34 A24 24 0 0 1 54 34" fill="none" stroke="#CFE2F5" stroke-width="5" stroke-linecap="round"/><path d="M6 34 A24 24 0 0 1 50 22" fill="none" stroke="#2E86C1" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="34" x2="49" y2="24" stroke="#2B2A28" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="34" r="3" fill="#2B2A28"/></svg><span>Heart panel</span><small>lipids, blood pressure</small></div>
+        <div class="metric"><svg width="50" height="33" viewBox="0 0 60 40" aria-hidden="true"><path d="M6 34 A24 24 0 0 1 54 34" fill="none" stroke="#CFE2F5" stroke-width="5" stroke-linecap="round"/><path d="M6 34 A24 24 0 0 1 34 10.5" fill="none" stroke="#2E86C1" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="34" x2="35" y2="11" stroke="#2B2A28" stroke-width="2" stroke-linecap="round"/><circle cx="30" cy="34" r="3" fill="#2B2A28"/></svg><span>CGM trial</span><small>15 days, own response</small></div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="card">
+      <div class="card-top" style="background:linear-gradient(90deg,var(--big),var(--small),var(--measure));"></div>
+      <div class="tag" style="color:var(--big);"><span class="step-num" style="background:var(--big);">2.3</span>Turn the knobs</div>
+      <h3>Three big knobs to turn</h3>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--big);"></i>Knob 1: cut carbs</span>
+        <span><i class="dot" style="background:var(--small);"></i>Knob 2: add healthy fat</span>
+        <span><i class="dot" style="background:var(--measure);"></i>Knob 3: maintain protein</span>
+      </div>
+      <p class="lead" style="font-size:12.5px;">Lifestyle shifted from manual labour that burned off carbs to a sedentary one that stores the excess as fat (<a href="#mismatch">see part 1</a>). Excess carb is now a serious health risk. It's the first big knob to turn.</p>
+      <div class="flow" aria-label="Excess carb, then insulin converts it to fat, which is stored as visceral fat (target to reduce) or subcutaneous fat (not a priority)">
+        <span class="fchip carb">Excess carb</span><span class="farr">→</span>
+        <span class="fchip">Insulin<small>converts to fat</small></span><span class="farr">→</span>
+        <span style="display:inline-flex;flex-direction:column;gap:6px;"><span class="fchip vis">Visceral fat<small>target: reduce</small></span><span class="fchip">Subcut. fat<small>not a priority</small></span></span>
+      </div>
+
+      <div class="knob-label" style="color:var(--big);">Knob 1: cut carbs</div>
+      <div class="knob orange">
+        <svg width="62" height="62" viewBox="0 0 140 140" aria-hidden="true"><circle cx="70" cy="70" r="56" fill="#FCEEDA" stroke="#D9861A" stroke-width="5"/><g stroke="#D9861A" stroke-width="4" stroke-linecap="round"><line x1="34.65" y1="34.65" x2="29" y2="29"/><line x1="70" y1="20" x2="70" y2="12"/><line x1="105.35" y1="34.65" x2="111" y2="29"/><line x1="120" y1="70" x2="128" y2="70"/><line x1="105.35" y1="105.35" x2="111" y2="111"/><line x1="70" y1="120" x2="70" y2="128"/><line x1="34.65" y1="105.35" x2="29" y2="111"/></g><line x1="70" y1="70" x2="93" y2="27" stroke="#7A4A0C" stroke-width="7" stroke-linecap="round"/><circle cx="70" cy="70" r="10" fill="#7A4A0C"/></svg>
+        <div><h4>Cut excess carb</h4><p>Less insulin → less visceral fat around the liver, pancreas &amp; heart. Helps the body recover from insulin resistance and improve insulin sensitivity. Shift in 2–4 weeks; felt by ~3 months.</p></div>
+      </div>
+
+      <div class="knob-label" style="color:var(--small);">Knob 2: add healthy fat</div>
+      <div class="knob teal">
+        <svg width="62" height="62" viewBox="0 0 140 140" aria-hidden="true"><circle cx="70" cy="70" r="56" fill="#E3F5EE" stroke="#1D9E75" stroke-width="5"/><g stroke="#1D9E75" stroke-width="4" stroke-linecap="round"><line x1="34.65" y1="34.65" x2="29" y2="29"/><line x1="70" y1="20" x2="70" y2="12"/><line x1="105.35" y1="34.65" x2="111" y2="29"/><line x1="120" y1="70" x2="128" y2="70"/><line x1="105.35" y1="105.35" x2="111" y2="111"/><line x1="70" y1="120" x2="70" y2="128"/><line x1="34.65" y1="105.35" x2="29" y2="111"/></g><line x1="70" y1="70" x2="93" y2="27" stroke="#0B5C46" stroke-width="7" stroke-linecap="round"/><circle cx="70" cy="70" r="10" fill="#0B5C46"/></svg>
+        <div><h4>Healthy fat → energy &amp; absorption</h4><p>Fat fuels ketone production for steady energy, and carries fat-soluble vitamins A, D, E &amp; K into the body.</p></div>
+      </div>
+      <div class="food-grid">
+        <div class="food-card"><svg width="26" height="26" viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="11" rx="7" ry="8" fill="#8BAF3E"/><ellipse cx="10" cy="4" rx="3" ry="2.5" fill="#5F7A2A"/><circle cx="10" cy="11" r="3" fill="#7A4A0C"/></svg><span>Avocado</span><small>monounsaturated</small></div>
+        <div class="food-card"><svg width="30" height="20" viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="14" cy="8" rx="8" ry="5" fill="#E8896B"/><polygon points="6,8 1,3 1,13" fill="#E8896B"/><circle cx="19" cy="6.5" r="1" fill="#7A2A15"/></svg><span>Salmon</span><small>omega-3 (EPA/DHA)</small></div>
+        <div class="food-card"><svg width="20" height="26" viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1 C11 7,13 10,13 13 A6 6 0 0 1 1 13 C1 10,3 7,7 1 Z" fill="#8BAF3E"/></svg><span>Olive oil</span><small>monounsaturated</small></div>
+        <div class="food-card"><svg width="20" height="26" viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1 C11 7,13 10,13 13 A6 6 0 0 1 1 13 C1 10,3 7,7 1 Z" fill="#B7C96A"/></svg><span>Avocado oil</span><small>monounsaturated</small></div>
+        <div class="food-card"><svg width="26" height="24" viewBox="0 0 18 16" aria-hidden="true"><ellipse cx="9" cy="8" rx="8" ry="7" fill="#B98655"/><path d="M9 2 V14 M9 8 H2 M9 8 H16" stroke="#7A4A0C" stroke-width="1" fill="none"/></svg><span>Walnuts</span><small>plant omega-3</small></div>
+        <div class="food-card"><svg width="16" height="26" viewBox="0 0 10 18" aria-hidden="true"><path d="M5 1 C9 4,9 14,5 17 C1 14,1 4,5 1 Z" fill="#D9B48F"/></svg><span>Almonds</span><small>vitamin E</small></div>
+      </div>
+
+      <div class="knob-label" style="color:var(--measure);">Knob 3: maintain protein</div>
+      <div class="knob blue">
+        <svg width="62" height="62" viewBox="0 0 140 140" aria-hidden="true"><circle cx="70" cy="70" r="56" fill="#E9F3FB" stroke="#2E86C1" stroke-width="5"/><g stroke="#2E86C1" stroke-width="4" stroke-linecap="round"><line x1="34.65" y1="34.65" x2="29" y2="29"/><line x1="70" y1="20" x2="70" y2="12"/><line x1="105.35" y1="34.65" x2="111" y2="29"/><line x1="120" y1="70" x2="128" y2="70"/><line x1="105.35" y1="105.35" x2="111" y2="111"/><line x1="70" y1="120" x2="70" y2="128"/><line x1="34.65" y1="105.35" x2="29" y2="111"/></g><line x1="70" y1="70" x2="93" y2="27" stroke="#0F4C77" stroke-width="7" stroke-linecap="round"/><circle cx="70" cy="70" r="10" fill="#0F4C77"/></svg>
+        <div><h4>Maintain protein</h4><p>Maintain healthy protein intake daily, sourced ethically and, as much as practical, organically.</p></div>
+      </div>
+
+      <div class="callout goal" style="margin-bottom:0;">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="#5C9A1B" stroke-width="1.3"/><circle cx="8" cy="8" r="4" fill="none" stroke="#5C9A1B" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" fill="#5C9A1B"/></svg>
+        <p><b>Goal:</b> shrink visceral fat while feeding the body clean fuel through healthy fat and steady protein. Together they help the liver, pancreas &amp; heart regulate hormones; inflammation drops, and the immune system's overreaction calms. <a href="#food">See what to eat →</a></p>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="card">
+      <div class="card-top" style="background:var(--finetune);"></div>
+      <div class="tag" style="color:var(--finetune);"><span class="step-num" style="background:var(--finetune);">2.4</span>Identify other triggers</div>
+      <h3>Fine-tune knobs</h3>
+      <p class="lead">Identify what's increasing inflammation for you, in food and in your environment.</p>
+      <a class="vref" href="https://youtu.be/3mXql6sOg80" target="_blank" rel="noopener"><span class="vnum">V5</span><span class="t"><b>Reference: Dr Tony Hampton, Autoimmune overview</b><small>2026 · 10 min · opens YouTube</small></span></a>
+      <div class="flow">
+        <span class="fchip" style="background:var(--finetune-l);border-color:var(--finetune);color:#4A3574;">1 · Remove suspects</span>
+        <span class="fchip" style="background:var(--finetune-l);border-color:var(--finetune);color:#4A3574;">2 · Reintroduce 1-by-1</span>
+        <span class="fchip" style="background:var(--finetune-l);border-color:var(--finetune);color:#4A3574;">3 · Track symptoms</span>
+      </div>
+      <div class="mini-label">Diet suspects to check</div>
+      <div class="chips"><span class="chip gray">Seed oils: cooking / frying</span><span class="chip gray">Dairy</span><span class="chip gray">Individual food types</span></div>
+      <div class="mini-label">Environmental suspects to check</div>
+      <div class="chips"><span class="chip gray">Mold: check washer detergent tray</span></div>
+      <div class="callout purple" style="margin-bottom:0;">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="#4A3574" stroke-width="1.3"/><path d="M7 4 V7 L9 9" fill="none" stroke="#4A3574" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <p>Prolonged exposure to many of these can cause inflammation and trigger an autoimmune response. Track changes for 4–6 weeks before drawing conclusions.</p>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="card">
+      <div class="card-top" style="background:var(--heal);"></div>
+      <div class="tag" style="color:var(--heal);"><span class="step-num" style="background:var(--heal);">2.5</span>Outcome</div>
+      <div class="icon-wrap">
+        <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36" fill="none" stroke="#5C9A1B" stroke-width="2" opacity="0.2"/><circle cx="40" cy="40" r="28" fill="none" stroke="#5C9A1B" stroke-width="2" opacity="0.35"/><circle cx="40" cy="24" r="13" fill="#F0C39B"/><path d="M20 78 C20 52 28 46 40 46 C52 46 60 52 60 78 Z" fill="#F0C39B"/><circle cx="58" cy="60" r="11" fill="#5C9A1B"/><path d="M53 60 L57 64 L64 55" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Body recalibrates</h3>
+      <p class="lead">Hormones stabilize, inflammation calms, and the autoimmune trigger fades. The full picture builds over roughly 3 months of consistent low-carb living.</p>
+      <span class="badge">This is step #0: more knobs coming</span>
+    </div>
+
+    <div class="quote">
+      <b>In my words:</b> "Decoding the autoimmune can be a long journey, full of frustrations and failures... As a method of elimination of what might be causing the trigger — Step #0: reduce/eliminate visceral fat. Some lucky people can just go the keto diet and swing back to a healthy state; for others, the journey could be much longer." — Phalguni Nanda
+      <div style="margin-top:8px;font-size:12px;color:var(--muted);">Personal context: Phal's own experience is with <b style="color:var(--ink);">Vitiligo</b>, ~2 years in.</div>
+    </div>
+  </section>
+
+  <!-- ================= PART 3 ================= -->
+  <section class="part" id="food">
+    <div class="part-head"><span class="n n3">3</span><h2>Food choices<small>What to put on your plate for each knob · vegetarian &amp; non-vegetarian</small></h2></div>
+
+    <!-- CARB -->
+    <div class="card" id="food-carb">
+      <div class="card-top" style="background:var(--big);"></div>
+      <div class="tag" style="color:var(--big);"><span class="step-num" style="background:var(--big);">3.1</span>Knob 1: cut carbs</div>
+      <h3>Carb: what to eat, what to avoid</h3>
+      <p class="lead">This is the big knob. Turn it first. Everything below follows from one idea.</p>
+
+      <div class="theme-banner">
+        <div class="big">Don't count calories. Count carbs.</div>
+        <div class="sub">Not just added sugar. Every carb counts: rice, roti, potatoes, fruit, dairy sugar, all of it.</div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">20g / day</div><div class="lbl">First 3 months: the major shift</div></div>
+        <div class="stat-card"><div class="num">30–50g / day</div><div class="lbl">Then: maintenance</div></div>
+      </div>
+
+      <div class="callout red">
+        <svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true"><path d="M9 1 L17 15 L1 15 Z" fill="none" stroke="#E24B4A" stroke-width="1.6" stroke-linejoin="round"/><line x1="9" y1="6" x2="9" y2="10.5" stroke="#E24B4A" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="12.5" r="1" fill="#E24B4A"/></svg>
+        <p><b>On insulin or other diabetes medication?</b> Talk to your doctor before cutting carbs this much. Reducing carbs without adjusting your dose can send blood sugar dangerously low.</p>
+      </div>
+
+      <div class="subhead"><span class="swatch" style="background:var(--issue);"></span>Carb surprises: do the math</div>
+      <p class="lead" style="font-size:12.5px;">One serving of these can blow past your entire day's 20g budget. This is why "just watch added sugar" isn't enough.</p>
+      <div class="surprise-row">
+        <div class="surprise-card"><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><ellipse cx="7" cy="7" rx="3" ry="1.8" fill="#8A6D3A"/><ellipse cx="14" cy="6" rx="3" ry="1.8" fill="#8A6D3A"/><ellipse cx="10" cy="10" rx="3" ry="1.8" fill="#8A6D3A"/><ellipse cx="17" cy="10.5" rx="3" ry="1.8" fill="#8A6D3A"/><ellipse cx="6" cy="12" rx="3" ry="1.8" fill="#8A6D3A"/></svg><div class="food">White rice</div><div class="serving">1 cup, cooked</div><div class="carbnum">45g</div><div class="pct">225% of 20g</div></div>
+        <div class="surprise-card"><svg width="18" height="24" viewBox="0 0 18 24" aria-hidden="true"><path d="M11 2 C7 4,4 10,5 17 C6 21,10 22,13 20 C9 19,7 15,7 11 C7 7,9 4,11 2 Z" fill="#EFC94C"/></svg><div class="food">Banana</div><div class="serving">1 medium</div><div class="carbnum">27g</div><div class="pct">135% of 20g</div></div>
+        <div class="surprise-card"><svg width="22" height="24" viewBox="0 0 18 20" aria-hidden="true"><circle cx="9" cy="11" r="8" fill="#97C459"/><path d="M9 3 Q11 0,13 2" fill="none" stroke="#5F3A1D" stroke-width="1.5" stroke-linecap="round"/></svg><div class="food">Apple</div><div class="serving">1 medium</div><div class="carbnum">25g</div><div class="pct">125% of 20g</div></div>
+        <div class="surprise-card"><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true"><circle cx="6" cy="7" r="2.4" fill="#D9861A"/><circle cx="11" cy="6" r="2.4" fill="#D9861A"/><circle cx="16" cy="7.5" r="2.4" fill="#D9861A"/><circle cx="8.5" cy="11" r="2.4" fill="#D9861A"/><circle cx="14" cy="11.5" r="2.4" fill="#D9861A"/></svg><div class="food">Chole</div><div class="serving">1 cup, cooked</div><div class="carbnum">45g</div><div class="pct">225% of 20g</div></div>
+        <div class="surprise-card"><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true"><circle cx="6" cy="7" r="2.4" fill="#8A5A16"/><circle cx="11" cy="6" r="2.4" fill="#8A5A16"/><circle cx="16" cy="7.5" r="2.4" fill="#8A5A16"/><circle cx="8.5" cy="11" r="2.4" fill="#8A5A16"/><circle cx="14" cy="11.5" r="2.4" fill="#8A5A16"/></svg><div class="food">Dal</div><div class="serving">1 cup, cooked</div><div class="carbnum">40g</div><div class="pct">200% of 20g</div></div>
+        <div class="surprise-card"><svg width="26" height="22" viewBox="0 0 26 22" aria-hidden="true"><ellipse cx="13" cy="17" rx="11" ry="3.5" fill="#E9E5D8"/><path d="M6 15 C4 9,10 5,13 9 C16 13,21 9,19 5 M8 16 C8 11,14 8,16 12 C18 16,22 13,21 9" fill="none" stroke="#E4B84E" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="13" r="2" fill="#C0392B"/></svg><div class="food">Pasta</div><div class="serving">1 cup, cooked</div><div class="carbnum">43g</div><div class="pct">215% of 20g</div></div>
+        <div class="surprise-card"><svg width="24" height="22" viewBox="0 0 24 22" aria-hidden="true"><path d="M3 4 Q12 0 21 4 L12 21 Z" fill="#F2C35B"/><path d="M3 4 Q12 0 21 4" fill="none" stroke="#C98A3A" stroke-width="2.4" stroke-linecap="round"/><circle cx="10" cy="8" r="1.8" fill="#C0392B"/><circle cx="14.5" cy="9" r="1.6" fill="#C0392B"/><circle cx="12" cy="13.5" r="1.5" fill="#C0392B"/></svg><div class="food">Pizza</div><div class="serving">1 large slice</div><div class="carbnum">35g</div><div class="pct">175% of 20g</div></div>
+        <div class="surprise-card"><svg width="28" height="22" viewBox="0 0 28 22" aria-hidden="true"><path d="M8 2 L12 10 M13 1 L15 10" stroke="#8A6D3A" stroke-width="1.4" stroke-linecap="round"/><path d="M3 10 H25 A11 10 0 0 1 3 10 Z" fill="#C0392B"/><path d="M6 10 C9 7,12 12,15 9 C18 6,20 11,23 9" fill="none" stroke="#F2D68A" stroke-width="1.8" stroke-linecap="round"/></svg><div class="food">Noodles</div><div class="serving">1 bowl (ramen, lo mein, pho)</div><div class="carbnum">~60g</div><div class="pct">300% of 20g</div></div>
+      </div>
+      <p class="small-note">Reference values, cooked / whole fruit. Actual carb counts vary by variety, portion and restaurant; a restaurant noodle bowl can be larger still.</p>
+
+      <div class="subhead"><span class="swatch" style="background:var(--small);"></span>Eat freely</div>
+      <div class="col-label">Non-starchy vegetables (vegetarian &amp; vegan)</div>
+      <div class="food-grid2">
+        <div class="food-card2"><svg width="22" height="26" viewBox="0 0 18 22" aria-hidden="true"><path d="M9 2 C14 2,16 8,14 14 C12 19,9 20,9 20 C9 20,6 19,4 14 C2 8,4 2,9 2 Z" fill="#639922"/></svg><span>Leafy greens</span><small>spinach, methi, lettuce</small></div>
+        <div class="food-card2"><svg width="24" height="24" viewBox="0 0 20 20" aria-hidden="true"><circle cx="7" cy="6" r="4" fill="#5F7A2A"/><circle cx="13" cy="6" r="4" fill="#5F7A2A"/><circle cx="10" cy="9" r="4" fill="#5F7A2A"/><rect x="8.5" y="11" width="3" height="7" fill="#B98655"/></svg><span>Broccoli &amp; cauliflower</span><small>florets</small></div>
+        <div class="food-card2"><svg width="24" height="24" viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="10" rx="8" ry="7" fill="#97C459"/><ellipse cx="10" cy="10" rx="5" ry="4.3" fill="none" stroke="#639922" stroke-width="1"/></svg><span>Cabbage</span><small>&amp; cucumber</small></div>
+        <div class="food-card2"><svg width="22" height="26" viewBox="0 0 18 22" aria-hidden="true"><path d="M9 3 C14 3,15 9,13 14 C11 19,9 20,9 20 C9 20,7 19,5 14 C3 9,4 3,9 3 Z" fill="#639922"/><rect x="7.5" y="1" width="3" height="3" fill="#3B6D11"/></svg><span>Bell peppers</span><small>capsicum</small></div>
+        <div class="food-card2"><svg width="26" height="20" viewBox="0 0 24 16" aria-hidden="true"><rect x="2" y="5" width="20" height="6" rx="3" fill="#639922"/></svg><span>Zucchini</span><small>&amp; bottle gourd</small></div>
+        <div class="food-card2"><svg width="20" height="24" viewBox="0 0 16 20" aria-hidden="true"><ellipse cx="8" cy="7" rx="8" ry="5" fill="#B4B2A9"/><rect x="6" y="7" width="4" height="11" rx="2" fill="#E9E5D8"/></svg><span>Mushrooms</span><small>any variety</small></div>
+        <div class="food-card2"><svg width="24" height="20" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 12 Q6 2,18 4" fill="none" stroke="#639922" stroke-width="3" stroke-linecap="round"/></svg><span>Green beans</span><small>&amp; okra</small></div>
+        <div class="food-card2"><svg width="22" height="24" viewBox="0 0 18 20" aria-hidden="true"><circle cx="9" cy="11" r="8" fill="#E24B4A"/><path d="M9 3 Q11 0,13 2" fill="none" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round"/></svg><span>Tomato</span><small>in moderation</small></div>
+      </div>
+
+      <div class="col-label" style="margin-top:16px;">Meat, fish, eggs &amp; dairy: naturally carb-free</div>
+      <div class="food-grid2">
+        <div class="food-card2 nonveg"><svg width="24" height="24" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 2 C16 2,18 6,16 10 C14 14,11 13,9 16 C7 19,3 19,2 17 C1 15,3 13,6 12 C8 11,8 9,8 7 C8 4,10 2,12 2 Z" fill="#C77B5E"/><path d="M3 16 L1 19" stroke="#B7C2D0" stroke-width="2" stroke-linecap="round"/></svg><span>Meat &amp; poultry</span><small>chicken; red meat in moderation (see Fat)</small></div>
+        <div class="food-card2 nonveg"><svg width="28" height="20" viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="14" cy="8" rx="8" ry="5" fill="#E8896B"/><polygon points="6,8 1,3 1,13" fill="#E8896B"/><circle cx="19" cy="6.5" r="1" fill="#7A2A15"/></svg><span>Fish &amp; seafood</span><small>any variety</small></div>
+        <div class="food-card2 nonveg"><svg width="26" height="22" viewBox="0 0 22 18" aria-hidden="true"><ellipse cx="7" cy="9" rx="6" ry="7.5" fill="#FBF7EF" stroke="#B7C2D0" stroke-width="1"/><ellipse cx="15" cy="10" rx="6" ry="7.5" fill="#FBF7EF" stroke="#B7C2D0" stroke-width="1"/><circle cx="15" cy="10" r="2.6" fill="#EFC94C"/></svg><span>Eggs</span><small>whole, any style</small></div>
+        <div class="food-card2"><svg width="24" height="22" viewBox="0 0 26 20" aria-hidden="true"><rect x="3" y="3" width="20" height="14" rx="3" fill="#FBF7EF" stroke="#B4B2A9" stroke-width="1"/><circle cx="9" cy="9" r="1" fill="#D8D4C6"/><circle cx="17" cy="9" r="1" fill="#D8D4C6"/><circle cx="13" cy="13" r="1" fill="#D8D4C6"/></svg><span>Paneer, cheese &amp; curd</span><small>minimal carb · full-fat in moderation</small></div>
+      </div>
+      <p class="small-note" style="margin-top:10px;">All within your fat and protein choices. The vegetables above are what round out the plate.</p>
+
+      <div class="subhead"><span class="swatch" style="background:var(--issue);"></span>Avoid</div>
+      <div class="two-col">
+        <div>
+          <div class="avoid-label" style="color:var(--issue);">Big no <span class="ptag always">Always: both phases</span></div>
+          <div class="avoid-list">
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="4" y="4" width="10" height="10" rx="1.5" fill="#E24B4A"/></svg><div><span class="t">Sugar &amp; sweets</span><span class="s">mithai, chocolate, soft drinks</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><ellipse cx="6" cy="7" rx="2.2" ry="1.3" fill="#E24B4A"/><ellipse cx="10" cy="6" rx="2.2" ry="1.3" fill="#E24B4A"/><ellipse cx="8" cy="10" rx="2.2" ry="1.3" fill="#E24B4A"/><ellipse cx="12" cy="10.5" rx="2.2" ry="1.3" fill="#E24B4A"/></svg><div><span class="t">White rice</span><span class="s">and rice-flour items, incl. rice noodles</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="#E8896B"/></svg><div><span class="t">Wheat &amp; maida</span><span class="s">bread, roti, naan, pasta, pizza, wheat noodles, biscuits</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><ellipse cx="9" cy="9" rx="7" ry="6" fill="#B98655"/></svg><div><span class="t">Potato &amp; starchy roots</span><span class="s">aloo, sweet potato</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 16 18" aria-hidden="true"><path d="M4 2 H12 L11 16 A1 1 0 0 1 10 17 H6 A1 1 0 0 1 5 16 Z" fill="none" stroke="#E24B4A" stroke-width="1.5"/><rect x="5.5" y="6" width="5" height="9" fill="#E24B4A"/></svg><div><span class="t">Fruit juice &amp; sugary drinks</span><span class="s">includes "healthy" packaged juice</span></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="avoid-label" style="color:var(--big);">Moderate <span class="ptag maint">Maintenance only: 30–50g/day</span></div>
+          <p class="small-note" style="margin:0 0 8px;">Not during the 20g/day phase. These wait until you've done the first 3 months.</p>
+          <div class="avoid-list">
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="6" cy="7" r="2" fill="#D9861A"/><circle cx="10" cy="6" r="2" fill="#D9861A"/><circle cx="8" cy="10" r="2" fill="#D9861A"/><circle cx="12" cy="10" r="2" fill="#D9861A"/></svg><div><span class="t">Lentils &amp; legumes</span><span class="s">dal, rajma, chana: key vegetarian protein, keep portions small</span></div></div>
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><ellipse cx="6" cy="8" rx="2" ry="1.2" fill="#8A5A16"/><ellipse cx="10" cy="7" rx="2" ry="1.2" fill="#8A5A16"/><ellipse cx="8" cy="10.5" rx="2" ry="1.2" fill="#8A5A16"/></svg><div><span class="t">Whole grains, small portions</span><span class="s">millets, ragi, jowar, brown rice</span></div></div>
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7" cy="7" r="2" fill="#993556"/><circle cx="11" cy="7" r="2" fill="#993556"/><circle cx="9" cy="11" r="2" fill="#993556"/></svg><div><span class="t">Low-sugar fruit</span><span class="s">berries, guava: small portions</span></div></div>
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M6 2 H12 L13 16 A1 1 0 0 1 12 17 H6 A1 1 0 0 1 5 16 Z" fill="#F5EFE0" stroke="#D9861A" stroke-width="1.2"/></svg><div><span class="t">Milk</span><span class="s">lactose is a carb; paneer &amp; curd are lower</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subhead"><span class="swatch" style="background:var(--finetune);"></span>Example day: putting it together</div>
+      <p class="small-note" style="margin:-4px 0 0;">Illustrative only. Adjust to your own appetite and tracking.</p>
+
+      <div class="meal-tier">20g/day: first 3 months</div>
+      <div class="two-col">
+        <div class="meal-plan-card">
+          <div class="meal-head"><span class="who">Vegetarian</span><span class="meal-total">~19g</span></div>
+          <div class="meal-row"><span class="meal-time">Breakfast</span><span class="meal-desc">Paneer bhurji with spinach &amp; tomato, sautéed in ghee</span><span class="meal-carb">4g</span></div>
+          <div class="meal-row"><span class="meal-time">Lunch</span><span class="meal-desc">Big salad: greens, cucumber, bell pepper, paneer, olive oil</span><span class="meal-carb">5g</span></div>
+          <div class="meal-row"><span class="meal-time">Snack</span><span class="meal-desc">8–10 almonds &amp; walnuts</span><span class="meal-carb">3g</span></div>
+          <div class="meal-row"><span class="meal-time">Dinner</span><span class="meal-desc">Palak paneer, cauliflower rice, cucumber raita</span><span class="meal-carb">7g</span></div>
+        </div>
+        <div class="meal-plan-card nonveg">
+          <div class="meal-head"><span class="who">Non-vegetarian</span><span class="meal-total">~12g</span></div>
+          <div class="meal-row"><span class="meal-time">Breakfast</span><span class="meal-desc">2-egg omelette with greens &amp; cheese</span><span class="meal-carb">2g</span></div>
+          <div class="meal-row"><span class="meal-time">Lunch</span><span class="meal-desc">Grilled chicken, big salad, olive oil dressing</span><span class="meal-carb">5g</span></div>
+          <div class="meal-row"><span class="meal-time">Snack</span><span class="meal-desc">2 boiled eggs</span><span class="meal-carb">1g</span></div>
+          <div class="meal-row"><span class="meal-time">Dinner</span><span class="meal-desc">Grilled salmon, sautéed greens</span><span class="meal-carb">4g</span></div>
+        </div>
+      </div>
+
+      <div class="meal-tier">30–50g/day: maintenance</div>
+      <div class="two-col">
+        <div class="meal-plan-card">
+          <div class="meal-head"><span class="who">Vegetarian</span><span class="meal-total">~43g</span></div>
+          <div class="meal-row"><span class="meal-time">Breakfast</span><span class="meal-desc">1 small moong dal chilla with vegetables</span><span class="meal-carb">10g</span></div>
+          <div class="meal-row"><span class="meal-time">Lunch</span><span class="meal-desc">Small bowl dal, sabzi, cucumber salad</span><span class="meal-carb">15g</span></div>
+          <div class="meal-row"><span class="meal-time">Snack</span><span class="meal-desc">Handful berries or 1 guava</span><span class="meal-carb">10g</span></div>
+          <div class="meal-row"><span class="meal-time">Dinner</span><span class="meal-desc">Paneer curry, sautéed greens, half a roti</span><span class="meal-carb">8g</span></div>
+        </div>
+        <div class="meal-plan-card nonveg">
+          <div class="meal-head"><span class="who">Non-vegetarian</span><span class="meal-total">~43g</span></div>
+          <div class="meal-row"><span class="meal-time">Breakfast</span><span class="meal-desc">Eggs with 1 small roti</span><span class="meal-carb">15g</span></div>
+          <div class="meal-row"><span class="meal-time">Lunch</span><span class="meal-desc">Grilled fish or chicken, sautéed vegetables, small dal</span><span class="meal-carb">12g</span></div>
+          <div class="meal-row"><span class="meal-time">Snack</span><span class="meal-desc">Handful berries</span><span class="meal-carb">10g</span></div>
+          <div class="meal-row"><span class="meal-time">Dinner</span><span class="meal-desc">Chicken curry, cauliflower rice, small salad</span><span class="meal-carb">6g</span></div>
+        </div>
+      </div>
+
+      <div class="subhead" id="fasting" style="scroll-margin-top:70px;"><span class="swatch" style="background:var(--ink);"></span>Fasting / intermittent fasting</div>
+      <p class="lead" style="font-size:12.5px;margin-bottom:10px;">When you eat matters too. A simple pattern: <b style="color:var(--ink);">no food from 8 PM to 12 noon</b>, then eat your meals between noon and 8 PM. That's a 16-hour fast, often called 16:8. Most of it happens while you sleep.</p>
+      <div class="fast-bar" role="img" aria-label="24-hour day: fasting from 8 PM to 12 noon (16 hours), eating from 12 noon to 8 PM (8 hours)">
+        <div class="seg fast" style="flex:16;">Fasting · 16 h</div>
+        <div class="seg eat" style="flex:8;">Eating · 8 h</div>
+      </div>
+      <div class="fast-axis"><span style="left:0;">8 PM</span><span style="left:66.67%;transform:translateX(-50%);">12 noon</span><span style="right:0;">8 PM</span></div>
+      <div class="fast-grid">
+        <div class="fx-card"><b>Insulin stays low for longer</b>No food means no insulin spikes, so the body switches to burning stored fat, including visceral fat.</div>
+        <div class="fx-card"><b>Better insulin sensitivity</b>Regular low-insulin stretches help cells respond to insulin again, which is the same goal as Knob 1.</div>
+        <div class="fx-card"><b>Calmer inflammation</b>Fasting periods are linked to lower inflammatory markers and to cell clean-up (autophagy).</div>
+        <div class="fx-card"><b>Simpler days</b>Fewer meals means fewer carb decisions. It also echoes how humans ate for most of history (<a href="#mismatch">part 1</a>).</div>
+      </div>
+      <div class="fast-how"><b>Ease in:</b> start with 12 hours (8 PM–8 AM), move to 14, then 16 over a few weeks. Water, black coffee and plain tea are fine during the fast. If you fast, drop the breakfast row in the example days above and fit the rest into your eating window.</div>
+      <div class="callout red" style="margin-top:10px;margin-bottom:0;">
+        <svg width="18" height="16" viewBox="0 0 18 16" aria-hidden="true"><path d="M9 1 L17 15 L1 15 Z" fill="none" stroke="#E24B4A" stroke-width="1.6" stroke-linejoin="round"/><line x1="9" y1="6" x2="9" y2="10.5" stroke="#E24B4A" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="12.5" r="1" fill="#E24B4A"/></svg>
+        <p><b>Check with your doctor first</b> if you take insulin or other diabetes or blood-pressure medication, are pregnant or breastfeeding, are underweight, or have a history of eating disorders. Research on fasting is promising and ongoing; some of its benefit comes simply from eating less.</p>
+      </div>
+      <div class="note">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="#6B6A63" stroke-width="1.3"/><line x1="7" y1="6" x2="7" y2="10" stroke="#6B6A63" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="4" r="0.8" fill="#6B6A63"/></svg>
+        <span>Individual conditions can change all of this. Always get medical advice for underlying conditions. Once the major shift is done (the first 3 months at 20g/day), moderation is the general, sensible advice from most dietitians, and one this plan agrees with.</span>
+      </div>
+    </div>
+
+    <!-- FAT -->
+    <div class="card" id="food-fat">
+      <div class="card-top" style="background:var(--small);"></div>
+      <div class="tag" style="color:var(--small);"><span class="step-num" style="background:var(--small);">3.2</span>Knob 2: healthy fat</div>
+      <h3>Fat: what to eat, what to avoid</h3>
+      <p class="lead">Fat is the fuel that replaces carbs. Quality matters more than quantity here: favor minimally processed, traditional fats over refined ones.</p>
+
+      <div class="subhead"><span class="swatch" style="background:var(--small);"></span>Eat these</div>
+      <div class="two-col">
+        <div>
+          <div class="col-label">Vegetarian</div>
+          <div class="food-grid2">
+            <div class="food-card2"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="14" r="9" fill="#7A4A0C"/><circle cx="13" cy="14" r="5.5" fill="#FBF7EF"/></svg><span>MCT oil</span><small>from coconut, long-chain fats removed · low heat</small></div>
+            <div class="food-card2"><svg width="20" height="26" viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1 C11 7,13 10,13 13 A6 6 0 0 1 1 13 C1 10,3 7,7 1 Z" fill="#8BAF3E"/></svg><span>Olive oil</span><small>monounsaturated</small></div>
+            <div class="food-card2"><svg width="22" height="26" viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="11" rx="7" ry="8" fill="#8BAF3E"/><ellipse cx="10" cy="4" rx="3" ry="2.5" fill="#5F7A2A"/><circle cx="10" cy="11" r="3" fill="#7A4A0C"/></svg><span>Avocado</span><small>monounsaturated</small></div>
+            <div class="food-card2"><svg width="26" height="24" viewBox="0 0 18 16" aria-hidden="true"><ellipse cx="9" cy="8" rx="8" ry="7" fill="#B98655"/><path d="M9 2 V14 M9 8 H2 M9 8 H16" stroke="#7A4A0C" stroke-width="1" fill="none"/></svg><span>Nuts</span><small>almond, walnut, cashew</small></div>
+            <div class="food-card2"><svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><ellipse cx="6" cy="10" rx="3" ry="2" fill="#8A6D3A"/><ellipse cx="13" cy="6" rx="3" ry="2" fill="#8A6D3A"/><ellipse cx="20" cy="11" rx="3" ry="2" fill="#8A6D3A"/><ellipse cx="14" cy="15" rx="3" ry="2" fill="#8A6D3A"/></svg><span>Seeds</span><small>flax, chia, sesame</small></div>
+            <div class="food-card2"><svg width="20" height="26" viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1 C11 7,13 10,13 13 A6 6 0 0 1 1 13 C1 10,3 7,7 1 Z" fill="#B7C96A"/></svg><span>Avocado oil</span><small>monounsaturated</small></div>
+          </div>
+        </div>
+        <div>
+          <div class="col-label">Non-vegetarian</div>
+          <div class="food-grid2">
+            <div class="food-card2 nonveg"><svg width="28" height="20" viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="14" cy="8" rx="8" ry="5" fill="#E8896B"/><polygon points="6,8 1,3 1,13" fill="#E8896B"/><circle cx="19" cy="6.5" r="1" fill="#7A2A15"/></svg><span>Fatty fish</span><small>salmon, mackerel, sardines</small></div>
+            <div class="food-card2 nonveg"><svg width="26" height="22" viewBox="0 0 22 18" aria-hidden="true"><ellipse cx="7" cy="9" rx="6" ry="7.5" fill="#FBF7EF" stroke="#B7C2D0" stroke-width="1"/><ellipse cx="15" cy="10" rx="6" ry="7.5" fill="#FBF7EF" stroke="#B7C2D0" stroke-width="1"/><circle cx="15" cy="10" r="2.6" fill="#EFC94C"/></svg><span>Eggs</span><small>yolk = fat + choline</small></div>
+            <div class="food-card2 nonveg"><svg width="24" height="24" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 2 C16 2,18 6,16 10 C14 14,11 13,9 16 C7 19,3 19,2 17 C1 15,3 13,6 12 C8 11,8 9,8 7 C8 4,10 2,12 2 Z" fill="#C77B5E"/><path d="M3 16 L1 19" stroke="#B7C2D0" stroke-width="2" stroke-linecap="round"/></svg><span>Chicken</span><small>skin-on, dark meat</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subhead"><span class="swatch" style="background:var(--issue);"></span>Avoid or moderate</div>
+      <div class="two-col">
+        <div>
+          <div class="avoid-label" style="color:var(--issue);">Big no</div>
+          <div class="avoid-list">
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="5" y="6" width="8" height="10" rx="2" fill="#E24B4A"/><rect x="7" y="2" width="4" height="4" rx="1" fill="#E24B4A"/></svg><div><span class="t">Vanaspati / dalda</span><span class="s">hydrogenated: trans fat</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="6" width="12" height="9" rx="2" fill="#E24B4A"/><rect x="3" y="6" width="12" height="2.5" fill="#8C2321"/></svg><div><span class="t">Margarine</span><span class="s">trans fat</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1 C11 7,13 10,13 13 A6 6 0 0 1 1 13 C1 10,3 7,7 1 Z" fill="#8C2321"/></svg><div><span class="t">Reused frying oil</span><span class="s">oxidized fat</span></div></div>
+            <div class="avoid-item no"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><polygon points="9,2 16,15 2,15" fill="#E24B4A"/></svg><div><span class="t">Packaged fried &amp; bakery snacks</span><span class="s">trans fat + refined carb</span></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="avoid-label" style="color:var(--big);">Moderate</div>
+          <div class="avoid-list">
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 14 18" aria-hidden="true"><path d="M7 1 C11 7,13 10,13 13 A6 6 0 0 1 1 13 C1 10,3 7,7 1 Z" fill="#D9861A"/></svg><div><span class="t">Refined seed oils</span><span class="s">soybean, sunflower, corn, cottonseed, canola: fine occasionally, minimize for daily cooking</span></div></div>
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true"><circle cx="8" cy="11" r="7.5" fill="#B75A4A"/><rect x="14" y="9" width="8" height="4" rx="2" fill="#F5EFE0"/></svg><div><span class="t">Red meat</span><span class="s">mutton, lamb, beef: its saturated animal fat can raise LDL cholesterol. Keep portions modest, favor leaner cuts &amp; grass-fed, and watch your lipid panel</span></div></div>
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 26 26" aria-hidden="true"><rect x="7" y="9" width="12" height="14" rx="2" fill="#D9861A"/><rect x="10" y="4" width="6" height="6" rx="1.5" fill="#D9861A"/></svg><div><span class="t">Ghee</span><span class="s">great for high-heat cooking, but mostly saturated fat: use a spoonful, not a pour</span></div></div>
+            <div class="avoid-item mod"><svg width="18" height="18" viewBox="0 0 26 20" aria-hidden="true"><rect x="3" y="3" width="20" height="14" rx="3" fill="#FBF7EF" stroke="#D9861A" stroke-width="1.4"/><circle cx="9" cy="9" r="1" fill="#D9861A"/><circle cx="17" cy="9" r="1" fill="#D9861A"/><circle cx="13" cy="13" r="1" fill="#D9861A"/></svg><div><span class="t">Full-fat paneer, cheese &amp; cream</span><span class="s">good protein and near-zero carb, but high in saturated fat: keep portions sensible and watch your lipid panel</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="#6B6A63" stroke-width="1.3"/><line x1="7" y1="6" x2="7" y2="10" stroke="#6B6A63" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="4" r="0.8" fill="#6B6A63"/></svg>
+        <span>Worth knowing: mainstream bodies like the American Heart Association still consider refined seed oils heart-healthy. The science here is genuinely debated, not settled. This plan leans on low-carb/metabolic-health sources (see videos below) and favors traditional, minimally processed fats for daily cooking.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="label">Homework: learning sources · opens YouTube</div>
+    <p class="small-note" style="margin:-4px 0 10px;">Refer to videos by number (V1–V5) when discussing them.</p>
+    <div class="videos">
+      <a class="video" id="v1" href="https://www.youtube.com/watch?v=zc8Nh4TMB1s" target="_blank" rel="noopener"><span class="vnum">V1</span><span class="play"><svg width="10" height="10" viewBox="0 0 8 8" aria-hidden="true"><polygon points="1,0 8,4 1,8" fill="#fff"/></svg></span><span class="vt"><b>Sugar</b><span>Dr David Unwin, MD</span></span><span class="vm">2026 · 2h 10m</span></a>
+      <a class="video" id="v2" href="https://youtu.be/KVXnVe8eOkM" target="_blank" rel="noopener"><span class="vnum">V2</span><span class="play"><svg width="10" height="10" viewBox="0 0 8 8" aria-hidden="true"><polygon points="1,0 8,4 1,8" fill="#fff"/></svg></span><span class="vt"><b>Insulin &amp; keto</b><span>Dr Boz, MD</span></span><span class="vm">2025 · 1h 51m</span></a>
+      <a class="video" id="v3" href="https://youtu.be/NyFSkGMWP5Q" target="_blank" rel="noopener"><span class="vnum">V3</span><span class="play"><svg width="10" height="10" viewBox="0 0 8 8" aria-hidden="true"><polygon points="1,0 8,4 1,8" fill="#fff"/></svg></span><span class="vt"><b>Metabolic health</b><span>Prof Benjamin Bikman</span></span><span class="vm">2026 · 2h 1m</span></a>
+      <a class="video" id="v4" href="https://youtu.be/VaVC3PAWqLk" target="_blank" rel="noopener"><span class="vnum">V4</span><span class="play"><svg width="10" height="10" viewBox="0 0 8 8" aria-hidden="true"><polygon points="1,0 8,4 1,8" fill="#fff"/></svg></span><span class="vt"><b>Cancer</b><span>Prof Thomas Seyfried</span></span><span class="vm">2025 · 1h 37m</span></a>
+      <a class="video" id="v5" href="https://youtu.be/3mXql6sOg80" target="_blank" rel="noopener"><span class="vnum">V5</span><span class="play"><svg width="10" height="10" viewBox="0 0 8 8" aria-hidden="true"><polygon points="1,0 8,4 1,8" fill="#fff"/></svg></span><span class="vt"><b>Autoimmune (overview)</b><span>Dr Tony Hampton</span></span><span class="vm">2026 · 10m</span></a>
+    </div>
+    <div class="disclaimer">Personal research notes, not medical advice. Talk to a doctor before changing diet or supplements, especially around existing liver, kidney or heart conditions.</div>
+    <a class="top-link" href="#top">↑ Back to top</a> &nbsp;·&nbsp; <a class="top-link" href="index.html">← Home</a>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    try{
+      var links=[].slice.call(document.querySelectorAll('.topnav a'));
+      var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+      if(!('IntersectionObserver' in window))return;
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){a.classList.remove('active');});
+            var a=map[e.target.id]; if(a){a.classList.add('active'); var c=a.parentNode; c.scrollLeft=a.offsetLeft-(c.clientWidth-a.offsetWidth)/2;}
+          }
+        });
+      },{rootMargin:'-45% 0px -50% 0px'});
+      ['mismatch','plan','food'].forEach(function(id){var el=document.getElementById(id); if(el)io.observe(el);});
+    }catch(e){}
+  })();
+</script>
+</body>
+</html>

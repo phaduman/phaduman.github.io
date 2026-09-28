@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phal's Notes</title>
+  <meta name="description" content="Notes on health, adventure, life lessons, and ideas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #ffffff;
+      --text: #1f2328;
+      --muted: #5c6470;
+      --line: #e7e1d8;
+      --health: #2f8f6b;
+      --adventure: #d0662a;
+      --lessons: #5a5fcf;
+      --ideas: #b8860b;
+      --radius: 16px;
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 6px 20px rgba(0,0,0,.05);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14161a;
+        --surface: #1c1f25;
+        --text: #eceae6;
+        --muted: #a0a6b0;
+        --line: #2c3038;
+        --health: #4cc497;
+        --adventure: #f08a4b;
+        --lessons: #8e92f2;
+        --ideas: #e5b53a;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 17px/1.6 "Inter", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    /* Top nav */
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
+    .brand { font-family: "Fraunces", Georgia, serif; font-weight: 700; font-size: 20px; text-decoration: none; }
+    .nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+    .nav a.pill {
+      display: block; padding: 8px 14px; border-radius: 999px;
+      text-decoration: none; font-size: 15px; font-weight: 500; color: var(--muted);
+    }
+    .nav a.pill:hover { background: var(--surface); color: var(--text); }
+
+    /* Hero */
+    .hero { padding: 64px 0 40px; }
+    .hero h1 {
+      font-family: "Fraunces", Georgia, serif; font-weight: 700;
+      font-size: clamp(34px, 6vw, 56px); line-height: 1.1; margin: 0 0 14px; letter-spacing: -.01em;
+    }
+    .hero p { color: var(--muted); font-size: clamp(17px, 2.2vw, 20px); max-width: 560px; margin: 0; }
+
+    /* Quick-jump tiles */
+    .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 32px 0 8px; }
+    .tile {
+      display: block; text-decoration: none; padding: 20px; border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+      border-top: 4px solid var(--c); transition: transform .15s ease;
+    }
+    .tile:hover { transform: translateY(-2px); }
+    .tile .icon { font-size: 26px; }
+    .tile strong { display: block; font-size: 18px; margin-top: 6px; }
+    .tile span { color: var(--muted); font-size: 14px; }
+
+    /* Sections */
+    section { padding: 48px 0 8px; }
+    .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); flex: none; }
+    section h2 { font-family: "Fraunces", Georgia, serif; font-size: 30px; margin: 0; }
+    .intro { color: var(--muted); margin: 0 0 20px; max-width: 620px; }
+
+    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 22px; box-shadow: var(--shadow);
+    }
+    .card .date { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--c); }
+    .card h3 { margin: 6px 0 8px; font-size: 19px; line-height: 1.35; }
+    .card p { margin: 0; color: var(--muted); font-size: 16px; }
+    .card a.more { display: inline-block; margin-top: 12px; font-weight: 600; font-size: 15px; color: var(--c); text-decoration: none; }
+    .card a.more:hover { text-decoration: underline; }
+
+    .card .emoji { font-size: 28px; line-height: 1; }
+    .card.feature { grid-column: 1 / -1; display: flex; gap: 20px; align-items: center; border-left: 4px solid var(--c); }
+    .card.feature .emoji { font-size: 40px; }
+    .card .soon { display: inline-block; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--muted);
+      background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+    .cards.three { grid-template-columns: repeat(3, 1fr); }
+
+    blockquote.lesson {
+      margin: 0; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--c);
+      border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow);
+      font-family: "Fraunces", Georgia, serif; font-size: 19px; line-height: 1.45;
+    }
+    blockquote.lesson small { display: block; margin-top: 10px; font-family: "Inter", sans-serif; font-size: 14px; color: var(--muted); }
+
+    .health    { --c: var(--health); }
+    .adventure { --c: var(--adventure); }
+    .lessons   { --c: var(--lessons); }
+    .ideas     { --c: var(--ideas); }
+
+    footer { margin-top: 64px; padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+    /* Tablet: tiles two across */
+    @media (max-width: 860px) {
+      .tiles { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Phone layout */
+    @media (max-width: 680px) {
+      body { font-size: 16px; }
+      .nav .brand { font-size: 18px; }
+      .nav a.pill { padding: 8px 10px; font-size: 14px; }
+      .hero { padding: 40px 0 24px; }
+      .tiles { grid-template-columns: 1fr; gap: 10px; }
+      .tile { display: flex; align-items: center; gap: 14px; padding: 16px; }
+      .tile strong { margin-top: 0; }
+      .cards, .cards.three { grid-template-columns: 1fr; }
+      .card.feature { flex-direction: column; align-items: flex-start; gap: 10px; }
+      section { padding-top: 36px; }
+      section h2 { font-size: 26px; }
+    }
+    @media (max-width: 560px) {
+      .nav .brand { display: none; }
+      .nav { justify-content: center; }
+      .nav ul { gap: 0; }
+      .nav a.pill { padding: 8px 9px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#top">Phal's Notes</a>
+      <ul>
+        <li><a class="pill" href="#health">Health</a></li>
+        <li><a class="pill" href="#adventure">Adventure</a></li>
+        <li><a class="pill" href="#lessons">Life Lessons</a></li>
+        <li><a class="pill" href="#ideas">Ideas</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+
+    <div class="hero">
+      <h1>Health, adventure, ideas, and a few things I've learned.</h1>
+      <p>A place to keep my notes and share them with friends and family. I update it now and then.</p>
+
+      <div class="tiles">
+        <a class="tile health" href="#health">
+          <div class="icon">🌿</div>
+          <div><strong>Health</strong><span>Autoimmune &amp; food choice</span></div>
+        </a>
+        <a class="tile adventure" href="#adventure">
+          <div class="icon">🏍️</div>
+          <div><strong>Adventure</strong><span>Running, riding, diving, hiking</span></div>
+        </a>
+        <a class="tile lessons" href="#lessons">
+          <div class="icon">💡</div>
+          <div><strong>Life Lessons</strong><span>At work, at home, alone</span></div>
+        </a>
+        <a class="tile ideas" href="#ideas">
+          <div class="icon">✨</div>
+          <div><strong>Ideas</strong><span>Things I'm thinking about</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ============ HEALTH ============ -->
+    <section id="health" class="health">
+      <div class="section-head"><span class="dot"></span><h2>Health</h2></div>
+      <p class="intro">What I'm learning about health, and what I eat because of it.</p>
+      <div class="cards">
+        <article class="card feature">
+          <div class="emoji">🥗</div>
+          <div>
+            <h3>Autoimmune &amp; Food Choice</h3>
+            <p>An infographic on how food choices connect to autoimmune health: what to favour, what to limit, and why.</p>
+            <a class="more" href="reversing-autoimmune.html">View the infographic →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ ADVENTURE ============ -->
+    <section id="adventure" class="adventure">
+      <div class="section-head"><span class="dot"></span><h2>Adventure</h2></div>
+      <p class="intro">Trips, rides, and time outdoors.</p>
+      <div class="cards">
+        <article class="card">
+          <div class="emoji">🏃</div>
+          <h3>Running</h3>
+          <p>Routes, races, and training notes.</p>
+          <span class="soon">Coming soon</span>
+        </article>
+        <article class="card">
+          <div class="emoji">🏍️</div>
+          <h3>Adventure Motorcycling</h3>
+          <p>Backcountry routes, trip reports, and gear.</p>
+          <span class="soon">Coming soon</span>
+        </article>
+        <article class="card">
+          <div class="emoji">🤿</div>
+          <h3>Scuba Diving</h3>
+          <p>Dive sites, logs, and what's under the surface.</p>
+          <span class="soon">Coming soon</span>
+        </article>
+        <article class="card">
+          <div class="emoji">🥾</div>
+          <h3>Hiking</h3>
+          <p>Trails, views, and the walks worth repeating.</p>
+          <span class="soon">Coming soon</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ LIFE LESSONS ============ -->
+    <section id="lessons" class="lessons">
+      <div class="section-head"><span class="dot"></span><h2>Life Lessons</h2></div>
+      <p class="intro">Short ideas I want to remember.</p>
+      <div class="cards three">
+        <article class="card">
+          <div class="emoji">💼</div>
+          <h3>At Work</h3>
+          <p>Set lower expectations, deliver higher outcomes.</p>
+          <span class="soon">More coming</span>
+        </article>
+        <article class="card">
+          <div class="emoji">🏡</div>
+          <h3>At Home</h3>
+          <p>Lessons from family and everyday life.</p>
+          <span class="soon">Coming soon</span>
+        </article>
+        <article class="card">
+          <div class="emoji">🧭</div>
+          <h3>Alone</h3>
+          <p>What solitude and quiet time have taught me.</p>
+          <span class="soon">Coming soon</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ IDEAS ============ -->
+    <section id="ideas" class="ideas">
+      <div class="section-head"><span class="dot"></span><h2>Ideas</h2></div>
+      <p class="intro">Things I'm thinking about, building, or want to try.</p>
+      <div class="cards">
+        <article class="card feature">
+          <div class="emoji">✨</div>
+          <div>
+            <h3>Your first idea</h3>
+            <p>A sentence or two about it. Replace this placeholder, or copy the card to add more ideas.</p>
+            <span class="soon">Coming soon</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Phal</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+</body>
+</html>
