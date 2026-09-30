@@ -158,6 +158,11 @@
   .sub-h{font-size:13px;font-weight:700;color:#8C2321;margin:0 0 8px;}
   .pivot{background:var(--ink);color:#FBF7EF;border-radius:10px;padding:12px;font-size:13px;font-weight:700;text-align:center;}
 
+  .env-list{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 12px;}
+  @media (min-width:560px){.env-list{grid-template-columns:1fr 1fr;} .env-list .env:last-child:nth-child(odd){grid-column:1 / -1;}}
+  .env{background:var(--finetune-l);border-radius:10px;padding:9px 12px;}
+  .env b{display:block;font-size:13px;color:#4A3574;margin-bottom:1px;}
+  .env span{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;}
   .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   @media (min-width:560px){.metric-grid{grid-template-columns:repeat(3,1fr);}}
   .metric{background:var(--measure-l);border-radius:10px;padding:10px 6px 8px;text-align:center;}
@@ -559,7 +564,14 @@
       <div class="mini-label">Diet suspects to check</div>
       <div class="chips"><span class="chip gray">Seed oils: cooking / frying</span><span class="chip gray">Dairy</span><span class="chip gray">Individual food types</span></div>
       <div class="mini-label">Environmental suspects to check</div>
-      <div class="chips"><span class="chip gray">Mold: check washer detergent tray</span></div>
+      <p class="mini-caption" style="margin:-2px 0 8px;">Not every body reacts to these; some do. Use the same remove → reintroduce → track approach to find yours.</p>
+      <div class="env-list">
+        <div class="env"><b>Air pollution &amp; dust</b><span>Traffic and smoke, construction or factory dust (e.g. silica)</span></div>
+        <div class="env"><b>Heavy metals in food</b><span>Mercury in large fish, arsenic in rice, cadmium</span></div>
+        <div class="env"><b>Certain infections or medications</b><span>E.g. Epstein-Barr virus; some prescription drugs. Talk to your doctor; don't stop medication on your own</span></div>
+        <div class="env"><b>Chemicals</b><span>Solvents, "forever chemicals" (PFAS, e.g. worn non-stick pans), hair dye, pesticides</span></div>
+        <div class="env"><b>Mold &amp; damp buildings</b><span>Check the washer detergent tray, bathrooms, AC units and damp walls</span></div>
+      </div>
       <div class="callout purple" style="margin-bottom:0;">
         <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="#4A3574" stroke-width="1.3"/><path d="M7 4 V7 L9 9" fill="none" stroke="#4A3574" stroke-width="1.3" stroke-linecap="round"/></svg>
         <p>Prolonged exposure to many of these can cause inflammation and trigger an autoimmune response. Track changes for 4–6 weeks before drawing conclusions.</p>
