@@ -158,6 +158,11 @@
   .sub-h{font-size:13px;font-weight:700;color:#8C2321;margin:0 0 8px;}
   .pivot{background:var(--ink);color:#FBF7EF;border-radius:10px;padding:12px;font-size:13px;font-weight:700;text-align:center;}
 
+  .gluten{background:var(--big-l);border-radius:10px;padding:10px 12px;}
+  .gluten > b{display:block;font-size:13px;color:#7A4A0C;margin-bottom:2px;}
+  .gluten > span{display:block;font-size:11.5px;color:#8A5A16;line-height:1.45;}
+  .dtrig-list{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 8px;}
+  @media (min-width:560px){.dtrig-list{grid-template-columns:1fr 1fr;}}
   .env-list{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 12px;}
   @media (min-width:560px){.env-list{grid-template-columns:1fr 1fr;} .env-list .env:last-child:nth-child(odd){grid-column:1 / -1;}}
   .env{background:var(--finetune-l);border-radius:10px;padding:9px 12px;}
@@ -585,7 +590,12 @@
         <span class="fchip" style="background:var(--finetune-l);border-color:var(--finetune);color:#4A3574;">3 · Track symptoms</span>
       </div>
       <div class="mini-label">Diet suspects to check</div>
-      <div class="chips"><span class="chip gray">Seed oils: cooking / frying</span><span class="chip gray">Dairy</span><span class="chip gray">Individual food types</span></div>
+      <div class="dtrig-list">
+        <div class="gluten"><b>Gluten</b><span>Wheat, barley, rye; also hidden in soy sauce, sauces and soups. Proven trigger for celiac. Ask for a celiac test <i>before</i> cutting it.</span></div>
+        <div class="gluten"><b>Dairy</b><span>Could be the sugar (lactose) or the proteins (whey, casein). Lactose-free milk only removes the sugar; the proteins stay.</span></div>
+      </div>
+      <div class="chips"><span class="chip gray">Seed oils: cooking / frying</span><span class="chip gray">Individual food types</span></div>
+      <p class="mini-caption" style="margin:-4px 0 12px;"><b style="color:var(--ink);">Other common suspects:</b> eggs, soy, corn, nightshades (tomato, potato, peppers, eggplant), nuts, legumes, alcohol. Most people tolerate them; test only if symptoms persist.</p>
       <div class="mini-label">Environmental suspects to check</div>
       <p class="mini-caption" style="margin:-2px 0 8px;">Not every body reacts to these; some do. Use the same remove → reintroduce → track approach to find yours.</p>
       <div class="env-list">
