@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sonoma &amp; Napa Guide</title>
+<meta name="description" content="Robbie Gonsalves' personal recommendations for wineries, restaurants and hotels in Sonoma and Napa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+<style>
+:root{
+  --bg:#faf7f2; --surface:#ffffff; --ink:#2a2220; --muted:#6f625d; --line:#e8dfd6;
+  --wine:#7b1e3a; --wine-soft:#f6e7ec; --leaf:#4a6b3a; --leaf-soft:#e9f0e3;
+  --gold:#a8742a; --gold-soft:#f8eedc; --sky:#2f5d7c; --sky-soft:#e3edf4;
+  --shadow:0 1px 2px rgba(60,30,20,.06),0 4px 14px rgba(60,30,20,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#191514; --surface:#231e1c; --ink:#f1e9e4; --muted:#b4a69f; --line:#3a312e;
+    --wine:#e58aa5; --wine-soft:#3d2129; --leaf:#a9cf8f; --leaf-soft:#25301f;
+    --gold:#e3b874; --gold-soft:#3a2e1c; --sky:#94c2e3; --sky-soft:#1d2b36;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#191514; --surface:#231e1c; --ink:#f1e9e4; --muted:#b4a69f; --line:#3a312e;
+  --wine:#e58aa5; --wine-soft:#3d2129; --leaf:#a9cf8f; --leaf-soft:#25301f;
+  --gold:#e3b874; --gold-soft:#3a2e1c; --sky:#94c2e3; --sky-soft:#1d2b36;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--wine)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+header.hero{padding:56px 0 28px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--wine);font-weight:600}
+h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1.05;margin:10px 0 12px}
+.lede{max-width:640px;color:var(--muted);font-size:17px;margin:0}
+.byline{margin-top:16px;font-size:14px;color:var(--muted)}
+.byline strong{color:var(--ink)}
+
+.controls{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.controls .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:12px;padding-bottom:12px}
+.tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{border:0;background:none;font:600 14px Inter,sans-serif;color:var(--muted);padding:7px 18px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--wine);color:var(--bg)}
+.search{flex:1 1 200px;min-width:0;position:relative}
+.search input{width:100%;font:14px Inter,sans-serif;padding:9px 12px 9px 34px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 13px Inter,sans-serif;padding:5px 11px;border-radius:999px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip[aria-pressed="true"]{border-color:currentColor}
+.chip.v[aria-pressed="true"]{background:var(--leaf-soft);color:var(--leaf)}
+.chip.f[aria-pressed="true"]{background:var(--wine-soft);color:var(--wine)}
+.chip.r[aria-pressed="true"]{background:var(--sky-soft);color:var(--sky)}
+.chip.m[aria-pressed="true"]{background:var(--gold-soft);color:var(--gold)}
+.chip.t[aria-pressed="true"]{background:var(--sky-soft);color:var(--sky)}
+
+.regionnav{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;scrollbar-width:thin}
+.regionnav a{flex:none;text-decoration:none;font-size:13px;font-weight:500;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:8px}
+.regionnav a:hover{border-color:var(--wine);color:var(--wine)}
+
+section.region{padding:28px 0 8px;scroll-margin-top:120px}
+.region h2{font-family:Fraunces,Georgia,serif;font-size:clamp(24px,3.5vw,32px);margin:0 0 4px;line-height:1.15}
+.region .intro{color:var(--muted);margin:0 0 18px;max-width:720px}
+.cols{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;box-shadow:var(--shadow)}
+.card h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.card h3 .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:14px}
+.k-wine .ic{background:var(--wine-soft)} .k-food .ic{background:var(--gold-soft)}
+.k-stay .ic{background:var(--sky-soft)} .k-beer .ic,.k-treat .ic{background:var(--leaf-soft)}
+.group-label{font-size:12px;font-weight:600;color:var(--wine);margin:14px 0 4px;letter-spacing:.02em}
+.group-label:first-of-type{margin-top:0}
+.group-note{font-size:12.5px;color:var(--muted);margin:-2px 0 6px}
+ul.items{list-style:none;margin:0 0 8px;padding:0}
+ul.items li{padding:9px 0;border-top:1px solid var(--line)}
+ul.items li:first-child{border-top:0}
+ol.items{counter-reset:n}
+ol.items li{counter-increment:n;position:relative;padding-left:26px}
+ol.items li::before{content:counter(n);position:absolute;left:0;top:10px;font:600 11px Inter,sans-serif;color:var(--muted);width:18px;height:18px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center}
+.name{font-weight:600}
+.name a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+.name a:hover{color:var(--wine);border-color:var(--wine)}
+.note{color:var(--muted);font-size:14px}
+.tags{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:4px;vertical-align:1px}
+.tag{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.tag.v{background:var(--leaf-soft);color:var(--leaf)}
+.tag.f{background:var(--wine-soft);color:var(--wine)}
+.tag.r{background:var(--sky-soft);color:var(--sky)}
+.tag.m{background:var(--gold-soft);color:var(--gold)}
+.tag.t{background:var(--sky-soft);color:var(--sky)}
+.empty{display:none;text-align:center;color:var(--muted);padding:48px 0}
+.hidden{display:none!important}
+mark{background:var(--gold-soft);color:inherit;border-radius:3px;padding:0 1px}
+
+footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 0 48px;color:var(--muted);font-size:13px}
+@media (max-width:520px){header.hero{padding-top:36px}.card{padding:16px 14px 6px}}
+
+/* wine-style chips */
+.chip-sep{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;align-self:center;margin:0 2px 0 8px}
+.chip-sep:first-child{margin-left:0}
+.chip .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.chip.R .dot{background:#8e1b3a} .chip.W .dot{background:#d9b44a} .chip.B .dot{background:#9fc3dc;box-shadow:inset 0 0 0 2px #fff6}
+.chip.R[aria-pressed="true"]{background:var(--wine-soft);color:var(--wine)}
+.chip.W[aria-pressed="true"]{background:var(--gold-soft);color:var(--gold)}
+.chip.B[aria-pressed="true"]{background:var(--sky-soft);color:var(--sky)}
+
+/* map */
+.mapcard{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+#map{height:440px;width:100%;background:var(--line)}
+.maphead{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{width:12px;height:12px;border-radius:50%;display:inline-block;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line)}
+.lg.wine{background:var(--wine)} .lg.food{background:var(--gold)} .lg.stay{background:var(--sky)} .lg.other{background:var(--leaf)}
+.lg.approx{background:transparent;border:2px dashed var(--muted);box-shadow:none}
+.mapbtn{border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 12.5px Inter,sans-serif;padding:5px 10px;border-radius:8px;cursor:pointer}
+.mapbtn:hover{border-color:var(--wine);color:var(--wine)}
+.mapnote{padding:8px 14px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+.pin{width:16px;height:16px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.pin.k-wine{background:var(--wine)} .pin.k-food{background:var(--gold)} .pin.k-stay{background:var(--sky)}
+.pin.k-beer,.pin.k-treat{background:var(--leaf)}
+.pin.approx{opacity:.85;border:2px dashed var(--surface)}
+.leaflet-container{font:13px/1.45 Inter,system-ui,sans-serif}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.leaflet-popup-content{margin:12px 14px;min-width:180px}
+.leaflet-container a.leaflet-popup-close-button{color:var(--muted)}
+.pop-name{font-weight:600;font-size:14px}
+.pop-note{color:var(--muted);margin-top:2px}
+.pop-meta{font-size:11.5px;color:var(--muted);margin-top:6px}
+.pop-go{margin-top:8px;border:0;background:var(--wine);color:var(--bg);font:600 12px Inter,sans-serif;padding:5px 10px;border-radius:7px;cursor:pointer}
+.marker-cluster{background:color-mix(in srgb,var(--wine) 28%,transparent);border-radius:50%}
+.marker-cluster div{background:var(--wine);color:var(--bg);width:30px;height:30px;margin:5px;border-radius:50%;text-align:center;font:600 12px/30px Inter,sans-serif}
+.leaflet-control-attribution{background:color-mix(in srgb,var(--surface) 85%,transparent)!important;color:var(--muted)!important}
+.leaflet-control-attribution a{color:var(--muted)!important}
+.leaflet-bar a{background:var(--surface);color:var(--ink);border-color:var(--line)}
+
+/* list ↔ map */
+.pinbtn{border:0;background:none;cursor:pointer;font-size:13px;padding:0 2px;margin-left:2px;opacity:.55;vertical-align:1px}
+.pinbtn:hover{opacity:1}
+li.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{background:var(--gold-soft)}100%{background:transparent}}
+ul.items li{scroll-margin-top:200px;border-radius:6px}
+@media (max-width:520px){#map{height:340px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Wine country, from someone who knows it</div>
+    <h1>Sonoma &amp; Napa</h1>
+    <p class="lede">Personal picks for wineries, restaurants and places to stay — organized by area, with notes on what to taste, where to book ahead, and where the vegan options are good.</p>
+    <div class="byline">Recommendations by <strong>Robbie Gonsalves</strong></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-area="Sonoma">Sonoma</button>
+      <button role="tab" aria-selected="false" data-area="Napa">Napa</button>
+    </div>
+    <label class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search — e.g. pinot, pizza, Healdsburg" aria-label="Search recommendations">
+    </label>
+    <div class="chips" id="chips">
+      <span class="chip-sep">Wine</span>
+      <button class="chip R" data-tag="R" aria-pressed="false"><span class="dot"></span>Reds</button>
+      <button class="chip W" data-tag="W" aria-pressed="false"><span class="dot"></span>Whites</button>
+      <button class="chip B" data-tag="B" aria-pressed="false"><span class="dot"></span>Bubbles</button>
+      <span class="chip-sep">Show</span>
+      <button class="chip f" data-tag="f" aria-pressed="false">★ Robbie's favorites</button>
+      <button class="chip v" data-tag="v" aria-pressed="false">🌱 Vegan-friendly</button>
+      <button class="chip r" data-tag="r" aria-pressed="false">📅 Book ahead</button>
+      <button class="chip m" data-tag="m" aria-pressed="false">✦ Michelin</button>
+      <button class="chip t" data-tag="t" aria-pressed="false">🍷 Good tour</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="mapcard" id="mapcard">
+    <div class="maphead">
+      <div class="legend">
+        <span><i class="lg wine"></i>Wineries</span>
+        <span><i class="lg food"></i>Restaurants</span>
+        <span><i class="lg stay"></i>Hotels</span>
+        <span><i class="lg other"></i>Beer &amp; treats</span>
+        <span><i class="lg approx"></i>Approximate</span>
+      </div>
+      <button class="mapbtn" id="mapreset" type="button">Fit all pins</button>
+    </div>
+    <div id="map" role="region" aria-label="Map of recommendations"></div>
+    <div class="mapnote">The map follows the tab, search and filters. Tap a pin for details, or 📍 next to any listing to find it on the map. Dashed pins sit at the town center — check the exact address before you drive.</div>
+  </div>
+  <nav class="regionnav" id="regionnav" aria-label="Jump to area"></nav>
+  <div id="content"></div>
+  <p class="empty" id="empty">Nothing matches that search. Try clearing a filter.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    Recommendations and notes by Robbie Gonsalves. Hours, reservation policies and menus change — check with each place before you go.
+  </div>
+</footer>
+
+<script>
+/* Tags: f = Robbie's favorite, v = vegan-friendly, r = reservation/appointment, m = Michelin, t = good tour
+   Item format: [name, note, tags, url] */
+const TAG_LABEL = {f:"★ Favorite", v:"🌱 Vegan", r:"📅 Book ahead", m:"✦ Michelin", t:"🍷 Tour"};
+const ICON = {wine:"🍇", food:"🍽", stay:"🛏", beer:"🍺", treat:"🍦"};
+
+const GUIDE = [
+{area:"Sonoma", regions:[
+ {id:"downtown-sonoma", name:"Downtown Sonoma", intro:"Highway 12 is the main road through Sonoma. Start your day with sparkling wine at Domaine Carneros, then work through the tasting rooms around the plaza.",
+  sections:[
+   {kind:"wine", title:"Wineries & tasting rooms", groups:[
+    {label:"Start here", items:[
+     ["Domaine Carneros","Very good sparkling wine and Pinot.","","https://www.domainecarneros.com/"]]},
+    {label:"Downtown tasting rooms", items:[
+     ["WALT","Excellent Pinots — try the Gap's Crown and the Sonoma Coast Chardonnay."],
+     ["Bennett Valley Cellars","Chardonnay & Pinot."],
+     ["Pangloss","Chardonnay & Pinot."],
+     ["Kamen","Excellent Cabs."],
+     ["Three Sticks","Excellent Pinots — try the Gap's Crown.","r"],
+     ["Roger Roessler","Pinots, Cab Franc."],
+     ["Stone Edge Farm","Cabs. Excellent restaurant (ENCLOS) — Robbie's favorite.","f r"],
+     ["Sojourn","Cabs and Pinots.","r"],
+     ["Auteur","Pinots & Chardonnay."],
+     ["Sonoma's Best","Small shop at E. Napa St & 8th St East that packs a big punch — great world-wine selection. Try the Blue Farm Pinot or Rivers-Marie; several French and Italian wines too."],
+     ["SIGH","Champagne & sparkling."],
+     ["Hawkes","Excellent Cabs & Merlot."],
+     ["Caddis","Cabs & GSM."],
+     ["Patz & Hall","Excellent Pinot & Chardonnay (8th St East)."],
+     ["Enkidu","Good red blends & Cabs (8th St East)."]]},
+    {label:"Historic wineries around downtown", items:[
+     ["Buena Vista Winery","The oldest winery in California, run by the Boisset family from Burgundy. Cabs, Pinot, Zins, Chardonnay.","","https://www.buenavistawinery.com/"],
+     ["Gundlach Bundschu","Cabs, Merlot, Tempranillo.","","https://www.gunbun.com/"],
+     ["Nicholson Ranch","Excellent Pinot and Cabs.","","http://www.nicholsonranch.com/"]]}
+   ]},
+   {kind:"food", title:"Restaurants", groups:[
+    {label:"In Robbie's order of preference", ordered:true, items:[
+     ["ENCLOS at Stone Edge Farm","One of the best restaurants in Napa/Sonoma.","f"],
+     ["Mamma Tanino's","Excellent old-fashioned Italian. Dinner only, Thursday–Sunday."],
+     ["Wit & Wisdom","Chef Michael Mina.","v"],
+     ["LaSalette","Portuguese."],
+     ["El Dorado Kitchen","Good all-around.","v"],
+     ["La Casa","Mexican, with a good vegan selection.","v"],
+     ["the girl & the fig","Excellent vegetarian and vegan selections.","v"],
+     ["Layla at MacArthur Place","29 E. MacArthur St. A few vegan options.","v"],
+     ["The Red Grape","Pizza — excellent vegan pizza.","v"],
+     ["della Santina's","Italian, with a strong wine list in their tasting room, Enoteca."],
+     ["Delicious Dish","On Arnold Drive."],
+     ["The Depot Hotel",""],
+     ["Café La Haye",""],
+     ["Allikai","Excellent soba soup, sandwiches and salads; vegan on request.","v"]]}
+   ]},
+   {kind:"stay", title:"Hotels near the plaza", groups:[
+    {items:[
+     ["MacArthur Place Inn & Spa",""],
+     ["El Dorado Hotel",""],
+     ["Inn at Sonoma","A Four Sisters Inn."],
+     ["Ledson Hotel",""],
+     ["Sonoma Hotel","Upstairs from the girl & the fig."],
+     ["The Lodge at Sonoma","Renaissance."],
+     ["Cottage Inn & Spa",""],
+     ["Bungalows 313",""],
+     ["Sonoma Bungalows","Excellent new home near the plaza."],
+     ["Cooperage Inn",""],
+     ["Best Western Sonoma Valley Inn","One block from the plaza, opposite Whole Foods."]]}
+   ]},
+   {kind:"treat", title:"Don't miss", groups:[
+    {items:[["Sweet Scoops Ice Cream","A must-visit — always 3–4 vegan flavors.","f v"]]}
+   ]}
+  ]},
+
+ {id:"glen-ellen-kenwood", name:"Boyes Hot Springs to Glen Ellen & Kenwood", intro:"Heading north up Highway 12 through the Valley of the Moon.",
+  sections:[
+   {kind:"wine", title:"Wineries", groups:[{items:[
+     ["Imagery","Cabs, sparkling, Pinots."],
+     ["St. Francis Winery & Vineyards","Cabs, Zins, Sauvignon Blanc — and an excellent place for dinner (reservations only).","r","https://www.stfranciswinery.com/"],
+     ["St. Anne's Crossing","Zins galore."],
+     ["Kunde Family Winery","Excellent caves and very good white wines.","","http://www.kunde.com/"],
+     ["Valley of the Moon Winery","Glen Ellen."],
+     ["Kenwood Vineyards","Cabs. Glen Ellen."],
+     ["Landmark","Pinots."],
+     ["Bucklin Old Hill Ranch","Excellent Cabs."],
+     ["Hamel Family Wines","Excellent Cabs."],
+     ["B.R. Cohn Winery & Olive Oil Co.",""],
+     ["Arrowood","Cabs & Zins."],
+     ["Mayo","Gewürztraminer and several Swiss-style whites."]]}]},
+   {kind:"food", title:"Restaurants", groups:[{items:[
+     ["St. Francis Winery","Voted best restaurant in America by OpenTable (2016). Reservations only; they do vegan as well.","r v"],
+     ["El Molino Central","Mexican — and it's good.","v"],
+     ["Fairmont Sonoma Mission Inn","Good brunch."],
+     ["Yeti","Nepalese and Indian."],
+     ["Salt & Stone","Excellent for family dinners."],
+     ["Glen Ellen Inn","Oyster bar & grill."],
+     ["Glen Ellen Star","Wood-fired pizzas."],
+     ["The Fig Café",""],
+     ["VJB","Good stop for pizza, sandwiches and Italian appetizers."],
+     ["Flamingo","Santa Rosa."],
+     ["Cozy Plum Bistro","Vegan restaurant in Santa Rosa.","v"]]}]},
+   {kind:"stay", title:"Hotels", groups:[{items:[
+     ["Fairmont Sonoma Mission Inn & Spa",""],
+     ["Kenwood Inn & Spa","Robbie's favorite place.","f"],
+     ["Olea Hotel","Glen Ellen."],
+     ["Jack London Lodge",""],
+     ["Beltane Ranch",""]]}]}
+  ]},
+
+ {id:"healdsburg", name:"Alexander Valley, Dry Creek & Healdsburg", intro:"Northern Sonoma — worth a full day on its own.",
+  sections:[
+   {kind:"wine", title:"Wineries", groups:[
+    {label:"Alexander Valley", items:[
+     ["Stone Street Winery","Excellent Cabs and an excellent place to relax — one of Robbie's best in this part of Sonoma.","f"],
+     ["Simi","Great tour of the historic building.","t"],
+     ["Soda Rock","Great relaxing place."],
+     ["Zialena",""],
+     ["Hawkes Family","Cabs, Merlot."],
+     ["deLorimier","Cabs, Cab Franc, Merlot."],
+     ["Kosta Browne","One of the best Pinots."]]},
+    {label:"Around Healdsburg & Dry Creek", items:[
+     ["Gary Farrell","Pinot."],
+     ["Jordan","Cabs, with a good food pairing."],
+     ["Chalk Hill Estate","Good Chardonnay."],
+     ["Silver Oak","Cabs, Merlot."],
+     ["Williams Selyem","Excellent Pinots & Chardonnay."],
+     ["Ferrari-Carano","Chardonnay."],
+     ["Gracianna","Rosé, Pinots."],
+     ["J Vineyards & Winery","Excellent Pinot, plus a very fancy bubbles/dining room."],
+     ["Sbragia Family","Cab, Chardonnay, Pinot."],
+     ["Rancho Maria","Online only — Zin, Petite Sirah."]]},
+    {label:"Downtown Healdsburg tasting", items:[
+     ["BACA","Zins."],
+     ["WALT","Pinots."],
+     ["Oakville Grocery","Very good wine selection."],
+     ["Soda Rock tasting room",""]]}
+   ]},
+   {kind:"food", title:"Restaurants", groups:[{items:[
+     ["Farmhouse Inn & Restaurant","Michelin star — excellent and worth the drive (Forestville).","m f"],
+     ["Madrona Manor","1001 Westside Rd. Excellent for lunch and afternoon drinks on the terrace."],
+     ["The Matheson","106 Matheson St. Excellent food and drinks."],
+     ["Rustic","Francis Ford Coppola's New York–style Italian. Excellent property."],
+     ["Campo Fina","Excellent Italian; serves vegetarian/vegan.","v"],
+     ["Barndiva",""],
+     ["Willi's Seafood & Raw Bar","Downtown Healdsburg."],
+     ["Little Saint","Plant-based.","v"],
+     ["SingleThread","Three Michelin stars. Lunch and dinner — book about 6 months ahead.","m r"],
+     ["Valette","Modern American, one Michelin star. Do the wine-pairing experience; sit outdoors if you can.","m"],
+     ["Dry Creek Kitchen","Charlie Palmer."],
+     ["Gizo","Latin American–local fusion, tapas style."],
+     ["Taqueria El Sombrero","Mexican."]]}]},
+   {kind:"stay", title:"Hotels", groups:[{items:[
+     ["Farmhouse Inn","Forestville."],
+     ["Madrona Manor","1001 Westside Rd, Healdsburg."]]}]}
+  ]},
+
+ {id:"hwy-121", name:"Along Highway 121", intro:"West of Sonoma toward Highway 101 — the Carneros side, on the way to and from San Francisco.",
+  sections:[
+   {kind:"wine", title:"Wineries", groups:[{items:[
+     ["Jacuzzi Family","Lots of good Italian-style wines (Barbera, Nebbiolo).","","http://www.jacuzziwines.com/"],
+     ["Cline Cellars","","","http://clinecellars.com/"],
+     ["Ram's Gate","Pinot, Chardonnay — an excellent place to relax. At the southwest end of Sonoma heading to SF.","","http://ramsgatewinery.com/"],
+     ["Anaba","Pinots & Chardonnay — some served at the White House. Also a decent white port."],
+     ["Schug Carneros Estate","Pinots."],
+     ["Robledo Family","Riesling, Rosé, Sauvignon Blanc, Tempranillo, Barbera."]]}]}
+  ]},
+
+ {id:"hwy-116", name:"Highway 116: Sebastopol to Guerneville", intro:"This drive has some amazing small wineries with great Pinot selections.",
+  sections:[
+   {kind:"food", title:"Sebastopol restaurants", groups:[{items:[
+     ["Ramen Gaijin","Excellent ramen and a fantastic bar — Robbie's go-to in Sebastopol. The vegan ramen is excellent.","f v"],
+     ["King Falafel","Jordanian-style falafel, plenty of vegan options.","v"],
+     ["K&L Bistro","French."],
+     ["Acre Pizza","Will do vegan, and it's good. Also in Petaluma.","v"],
+     ["The Barlow","Stuck for a place to eat? Head to the Barlow — several restaurants will take care of you."]]}]},
+   {kind:"beer", title:"For beer lovers", groups:[{items:[
+     ["Crooked Goat Brewing","Excellent IPA selection."],
+     ["Russian River Brewing Co.","Excellent beer."]]}]}
+  ]}
+]},
+
+{area:"Napa", regions:[
+ {id:"napa-valley", name:"Napa Valley: Silverado Trail, Hwy 29 & Mt. Veeder", intro:"Start on the Silverado Trail, then cut across to Highway 29 — and save time for Mt. Veeder if you want something off the beaten path.",
+  sections:[
+   {kind:"wine", title:"Wineries", groups:[
+    {label:"1 · Start on the Silverado Trail", items:[
+     ["Darioush","Very good Pinots and Cabs — a good place for photos.","","https://www.darioush.com/"],
+     ["Kenzo Estate","Off Monticello Rd near the Silverado Trail — a good starting point."],
+     ["Stag's Leap Wine Cellars","Excellent Cabs and Chardonnay. Take the cave tour.","t","https://www.cask23.com/"],
+     ["Chimney Rock","Good all-around selection."],
+     ["Quintessa","Cab, and a good wine tour.","t"]]},
+    {label:"2 · Cut across to Highway 29", items:[
+     ["HALL","Excellent Cabs, Pinot, Chardonnay — a very nice place to relax, with good artwork.","","http://www.hallwines.com/"],
+     ["Merryvale","Known for high-end Cabs.","","https://www.merryvale.com/"],
+     ["Peju","A good mix of Cabs, Merlot, Zin and whites.","","http://www.peju.com/"],
+     ["Robert Mondavi","If you want a winery tour, one of the best in Napa.","t","https://www.robertmondaviwinery.com/"],
+     ["Beaulieu Vineyard","Still has some great vintage Cabs."],
+     ["Grgich Hills Estate","Cabs."],
+     ["Far Niente","Good selection of Cabs."],
+     ["Charles Krug","Old Cabs."],
+     ["Cardinale",""],
+     ["Opus One","Excellent Cabs and a great tour in the basement.","t"],
+     ["Alpha Omega","Cabs and Pinots; also a tasting room downtown."],
+     ["Promontory","Cabs. Email concierge@promontory.wine — the best way to get a reservation.","r"],
+     ["Peter Michael","Excellent Cabs, Sauvignon Blanc/Sémillon, Pinot."]]},
+    {label:"3 · Off the beaten path: Mt. Veeder", items:[
+     ["The Hess Collection","Food pairings and dinner — make a reservation. A Swiss family took over the old Christian Brothers operation and built an amazing vineyard and art museum. Highly recommended.","f r","https://www.hesscollection.com/"],
+     ["Mayacamas","Appointment needed.","r","https://www.mayacamas.com/"],
+     ["Mt. Veeder Winery","Excellent Cabs."]]}
+   ]},
+   {kind:"food", title:"Restaurants", groups:[
+    {label:"Downtown Napa", items:[
+     ["Morimoto Napa","Near the river. Excellent Japanese food; service can be an issue."],
+     ["Tarla Mediterranean Grill",""],
+     ["Kenzo","Japanese, Michelin star, excellent service.","m"],
+     ["La Toque","At the Westin. Michelin star; good veg/vegan selections with one day's notice.","m v"],
+     ["CIA at Copia","Excellent for a family gathering or hosting a large reception."],
+     ["Dutch Door","Excellent sandwiches; vegan burgers made in-house. Robbie's go-to in Napa.","f v"]]},
+    {label:"Carneros & Mt. Veeder", items:[
+     ["Boon Fly Café","At Carneros Resort & Spa. Good for breakfast/lunch — try the Kobe-style burger."],
+     ["The Farm","At Carneros Resort & Spa. California-style food, a few vegan options.","v"],
+     ["Hess Restaurant, Mt. Veeder","An excellent experience — one of the best!","f"],
+     ["Napa Valley Wine Train","Lunch and dinner — call to reserve.","r","http://winetrain.com/train/route/"]]},
+    {label:"Yountville, Oakville & Rutherford", items:[
+     ["Mustards Grill","Hwy 29, casual California cuisine."],
+     ["Brix","Casual, off Hwy 29."],
+     ["Redd Wood","Excellent pizza."],
+     ["Bottega","Excellent Italian."],
+     ["Bouchon Bistro","French all the way."],
+     ["The French Laundry","Three Michelin stars. Reservations required.","m r"],
+     ["Rutherford Grill","Excellent pub food, Hwy 29."],
+     ["Ciccio","Excellent Italian bistro."],
+     ["Bistro Jeanty",""],
+     ["Ad Hoc","Casual American."],
+     ["R+D Kitchen","Casual American plus sushi."],
+     ["RH Yountville","The Restoration Hardware restaurant."],
+     ["Charter Oak",""],
+     ["Oakville Grocery","Sandwiches."],
+     ["V. Sattui","Sandwiches and excellent Italian appetizers."]]}
+   ]},
+   {kind:"stay", title:"Hotels — downtown Napa", groups:[{items:[
+     ["The Westin Verasa","The best!","f"],
+     ["Archer Hotel","Excellent location."],
+     ["Napa River Inn & Spa",""],
+     ["Vista Collina Resort & Spa",""],
+     ["The Meritage Resort & Spa","About 15 minutes from downtown."],
+     ["Embassy Suites","Not a bad place, very good location."],
+     ["Stanly Ranch",""]]}]}
+  ]},
+
+ {id:"st-helena-calistoga", name:"St. Helena & Calistoga", intro:"The northern end of the valley.",
+  sections:[
+   {kind:"wine", title:"Wineries", groups:[{items:[
+     ["Freemark Abbey","Excellent Cabs."],
+     ["Chateau Montelena","Good Chardonnay and Cabs — if you liked the movie Bottle Shock, you'll like this place."],
+     ["Castello di Amorosa","A good place to visit for a tour.","t"],
+     ["Louis M. Martini","Try the Monte Rosso Cabs.","","https://www.louismartini.com/"],
+     ["Silver Oak","Napa & Alexander Valley — great Cabs."],
+     ["Twomey","Silver Oak's sister brand — Pinot, Merlot, Cabs."],
+     ["Raymond Vineyards","Cabs, and a good picnic spot."],
+     ["Elusa Winery","At the Four Seasons — excellent Cabs."],
+     ["Schramsberg","Great sparkling wine and a romantic spot to sip it."],
+     ["Sterling Vineyards","Excellent wine and views."],
+     ["Duckhorn Vineyards",""],
+     ["Whitehall Lane","Hwy 29."],
+     ["Heitz Cellar","Cabs."]]}]},
+   {kind:"food", title:"Restaurants", groups:[
+    {label:"St. Helena & Rutherford", items:[
+     ["The Restaurant at Meadowood","Three Michelin stars.","m"],
+     ["Goose & Gander","Great place, with good shopping nearby."],
+     ["CIA at Greystone","Excellent dinner — make a reservation. A fun place to visit with family.","r","https://www.ciachef.edu/cia-california/"],
+     ["The Press","Fine dining."],
+     ["Auberge du Soleil","An excellent experience with vegan options and great service.","v"],
+     ["Auro at the Four Seasons","Excellent service."],
+     ["Farmstead at Long Meadow Ranch","Off Hwy 29 — good fun, with vegan options.","v"]]},
+    {label:"Calistoga", items:[
+     ["Evangeline","French & Cajun.","","https://www.evangelinenapa.com/"],
+     ["Mangia Mi","Italian.","","https://mangiami.com/"],
+     ["Bricco Osteria","Italian.","","https://briccoosteria.com/menu/"],
+     ["Susie's Bar","Dive bar.","","http://susiescalistoga.com/"]]}
+   ]},
+   {kind:"stay", title:"Hotels", groups:[{items:[
+     ["Auberge du Soleil","Rutherford. Awesome location and excellent service.","f"],
+     ["Meadowood Napa Valley",""],
+     ["Four Seasons Resort Napa Valley","Newer hotel and restaurant."],
+     ["Harvest Inn","St. Helena."],
+     ["Alila Napa Valley",""],
+     ["Inn at Salvestrin Winery",""],
+     ["Inn St. Helena",""]]}]}
+  ]}
+]}
+];
+
+/* ---------- map locations ----------
+   Town centers are used where no specific spot is listed; those pins are drawn as "approximate". */
+const TOWN = {
+  sonoma:[38.2930,-122.4580,"downtown Sonoma"], boyes:[38.3140,-122.4810,"Boyes Hot Springs"],
+  glenellen:[38.3640,-122.5240,"Glen Ellen"], kenwood:[38.4140,-122.5460,"Kenwood"],
+  santarosa:[38.4405,-122.7141,"Santa Rosa"], healdsburg:[38.6105,-122.8695,"downtown Healdsburg"],
+  alexander:[38.6650,-122.8300,"Alexander Valley"], forestville:[38.4735,-122.8903,"Forestville"],
+  sebastopol:[38.4021,-122.8239,"Sebastopol"], carneros:[38.2450,-122.4500,"Carneros (Hwy 121)"],
+  napa:[38.2975,-122.2869,"downtown Napa"], yountville:[38.4016,-122.3608,"Yountville"],
+  mtveeder:[38.3700,-122.4100,"Mt. Veeder"], sthelena:[38.5052,-122.4703,"St. Helena"],
+  calistoga:[38.5788,-122.5797,"Calistoga"], oakville:[38.4371,-122.4011,"Oakville"]
+};
+const REGION_TOWN = {"downtown-sonoma":"sonoma","glen-ellen-kenwood":"glenellen","healdsburg":"healdsburg",
+  "hwy-121":"carneros","hwy-116":"sebastopol","napa-valley":"napa","st-helena-calistoga":"sthelena"};
+/* Group-level defaults (region|group label) */
+const GROUP_TOWN = {"healdsburg|Alexander Valley":"alexander","napa-valley|Yountville, Oakville & Rutherford":"yountville",
+  "st-helena-calistoga|Calistoga":"calistoga","napa-valley|3 · Off the beaten path: Mt. Veeder":"mtveeder"};
+/* Specific spots: [lat,lng]; a string = town key; null = no pin */
+const LOC = {
+ "downtown-sonoma|Domaine Carneros":[38.2522,-122.3532],
+ "downtown-sonoma|Sonoma's Best":[38.2925,-122.4440],
+ "downtown-sonoma|Patz & Hall":[38.2700,-122.4440],
+ "downtown-sonoma|Enkidu":"sonoma",
+ "downtown-sonoma|Buena Vista Winery":[38.2996,-122.4422],
+ "downtown-sonoma|Gundlach Bundschu":[38.2848,-122.4243],
+ "downtown-sonoma|Nicholson Ranch":[38.2366,-122.4070],
+ "downtown-sonoma|Delicious Dish":"boyes",
+ "downtown-sonoma|MacArthur Place Inn & Spa":[38.2878,-122.4565],
+ "downtown-sonoma|Layla at MacArthur Place":[38.2878,-122.4565],
+ "downtown-sonoma|The Lodge at Sonoma":[38.2855,-122.4590],
+ "downtown-sonoma|Best Western Sonoma Valley Inn":[38.2945,-122.4605],
+ "glen-ellen-kenwood|Imagery":[38.3720,-122.5190],
+ "glen-ellen-kenwood|St. Francis Winery & Vineyards":[38.4310,-122.5690],
+ "glen-ellen-kenwood|St. Francis Winery":[38.4310,-122.5690],
+ "glen-ellen-kenwood|St. Anne's Crossing":[38.4185,-122.5520],
+ "glen-ellen-kenwood|Kunde Family Winery":[38.3970,-122.5380],
+ "glen-ellen-kenwood|Valley of the Moon Winery":[38.3570,-122.5130],
+ "glen-ellen-kenwood|Kenwood Vineyards":[38.4140,-122.5450],
+ "glen-ellen-kenwood|Landmark":[38.4330,-122.5700],
+ "glen-ellen-kenwood|Hamel Family Wines":[38.3290,-122.4950],
+ "glen-ellen-kenwood|B.R. Cohn Winery & Olive Oil Co.":[38.3540,-122.5070],
+ "glen-ellen-kenwood|Arrowood":[38.3680,-122.5180],
+ "glen-ellen-kenwood|Mayo":"kenwood",
+ "glen-ellen-kenwood|El Molino Central":[38.3000,-122.4850],
+ "glen-ellen-kenwood|Fairmont Sonoma Mission Inn":[38.3120,-122.4840],
+ "glen-ellen-kenwood|Fairmont Sonoma Mission Inn & Spa":[38.3120,-122.4840],
+ "glen-ellen-kenwood|Salt & Stone":[38.4130,-122.5470],
+ "glen-ellen-kenwood|VJB":[38.4120,-122.5450],
+ "glen-ellen-kenwood|Flamingo":[38.4440,-122.7010],
+ "glen-ellen-kenwood|Cozy Plum Bistro":"santarosa",
+ "glen-ellen-kenwood|Kenwood Inn & Spa":[38.4085,-122.5420],
+ "glen-ellen-kenwood|Beltane Ranch":[38.3850,-122.5320],
+ "healdsburg|Simi":[38.6295,-122.8650],
+ "healdsburg|Soda Rock":[38.6720,-122.8130],
+ "healdsburg|Hawkes Family":[38.6610,-122.8210],
+ "healdsburg|Kosta Browne":[38.4040,-122.8270],
+ "healdsburg|Gary Farrell":[38.5010,-122.9050],
+ "healdsburg|Jordan":[38.6480,-122.8180],
+ "healdsburg|Chalk Hill Estate":[38.5870,-122.7530],
+ "healdsburg|Silver Oak":[38.6780,-122.8280],
+ "healdsburg|Williams Selyem":[38.5760,-122.8750],
+ "healdsburg|Ferrari-Carano":[38.6990,-123.0130],
+ "healdsburg|Gracianna":[38.5520,-122.8590],
+ "healdsburg|J Vineyards & Winery":[38.5880,-122.8380],
+ "healdsburg|Sbragia Family":[38.7160,-123.0450],
+ "healdsburg|Rancho Maria":null,
+ "healdsburg|Farmhouse Inn & Restaurant":[38.4880,-122.8810],
+ "healdsburg|Farmhouse Inn":[38.4880,-122.8810],
+ "healdsburg|Madrona Manor":[38.6050,-122.8880],
+ "healdsburg|Rustic":[38.6830,-122.8910],
+ "healdsburg|SingleThread":[38.6107,-122.8680],
+ "healdsburg|Barndiva":[38.6100,-122.8710],
+ "hwy-121|Jacuzzi Family":[38.2440,-122.4590],
+ "hwy-121|Cline Cellars":[38.2450,-122.4570],
+ "hwy-121|Ram's Gate":[38.2210,-122.4490],
+ "hwy-121|Anaba":[38.2510,-122.4590],
+ "hwy-116|The Barlow":[38.4035,-122.8195],
+ "hwy-116|Acre Pizza":[38.4040,-122.8190],
+ "hwy-116|Crooked Goat Brewing":[38.4035,-122.8195],
+ "hwy-116|Russian River Brewing Co.":[38.4400,-122.7130],
+ "napa-valley|Darioush":[38.3200,-122.2730],
+ "napa-valley|Kenzo Estate":[38.3330,-122.2240],
+ "napa-valley|Stag's Leap Wine Cellars":[38.3990,-122.3240],
+ "napa-valley|Chimney Rock":[38.3980,-122.3150],
+ "napa-valley|Quintessa":[38.4630,-122.4040],
+ "napa-valley|HALL":[38.4870,-122.4510],
+ "napa-valley|Merryvale":[38.5020,-122.4680],
+ "napa-valley|Peju":[38.4430,-122.4120],
+ "napa-valley|Robert Mondavi":[38.4410,-122.4100],
+ "napa-valley|Beaulieu Vineyard":[38.4570,-122.4230],
+ "napa-valley|Grgich Hills Estate":[38.4530,-122.4180],
+ "napa-valley|Far Niente":[38.4250,-122.4180],
+ "napa-valley|Charles Krug":[38.5130,-122.4800],
+ "napa-valley|Cardinale":[38.4380,-122.4070],
+ "napa-valley|Opus One":[38.4300,-122.3980],
+ "napa-valley|Alpha Omega":[38.4800,-122.4440],
+ "napa-valley|Promontory":"oakville",
+ "napa-valley|Peter Michael":"calistoga",
+ "napa-valley|The Hess Collection":[38.3330,-122.3780],
+ "napa-valley|Hess Restaurant, Mt. Veeder":[38.3330,-122.3780],
+ "napa-valley|Morimoto Napa":[38.2990,-122.2830],
+ "napa-valley|Tarla Mediterranean Grill":[38.2995,-122.2860],
+ "napa-valley|La Toque":[38.3040,-122.2860],
+ "napa-valley|CIA at Copia":[38.3060,-122.2810],
+ "napa-valley|Boon Fly Café":[38.2590,-122.3330],
+ "napa-valley|The Farm":[38.2590,-122.3330],
+ "napa-valley|Napa Valley Wine Train":[38.3030,-122.2820],
+ "napa-valley|Mustards Grill":[38.4170,-122.3830],
+ "napa-valley|Brix":[38.4150,-122.3800],
+ "napa-valley|Redd Wood":[38.4045,-122.3640],
+ "napa-valley|Bottega":[38.4040,-122.3630],
+ "napa-valley|Bouchon Bistro":[38.4023,-122.3620],
+ "napa-valley|The French Laundry":[38.4045,-122.3648],
+ "napa-valley|Rutherford Grill":[38.4600,-122.4240],
+ "napa-valley|Bistro Jeanty":[38.3990,-122.3590],
+ "napa-valley|Ad Hoc":[38.4030,-122.3640],
+ "napa-valley|Charter Oak":[38.5040,-122.4690],
+ "napa-valley|Oakville Grocery":[38.4362,-122.4010],
+ "napa-valley|V. Sattui":[38.4900,-122.4590],
+ "napa-valley|The Westin Verasa":[38.3040,-122.2860],
+ "napa-valley|Archer Hotel":[38.2985,-122.2860],
+ "napa-valley|Napa River Inn & Spa":[38.2975,-122.2840],
+ "napa-valley|The Meritage Resort & Spa":[38.2580,-122.2770],
+ "napa-valley|Stanly Ranch":[38.2630,-122.3060],
+ "st-helena-calistoga|Freemark Abbey":[38.5370,-122.5050],
+ "st-helena-calistoga|Chateau Montelena":[38.6030,-122.5900],
+ "st-helena-calistoga|Castello di Amorosa":[38.5570,-122.5410],
+ "st-helena-calistoga|Louis M. Martini":[38.4940,-122.4620],
+ "st-helena-calistoga|Silver Oak":[38.4440,-122.3960],
+ "st-helena-calistoga|Twomey":[38.5550,-122.5440],
+ "st-helena-calistoga|Raymond Vineyards":[38.4900,-122.4540],
+ "st-helena-calistoga|Elusa Winery":[38.5610,-122.5520],
+ "st-helena-calistoga|Schramsberg":[38.5530,-122.5340],
+ "st-helena-calistoga|Sterling Vineyards":[38.5560,-122.5400],
+ "st-helena-calistoga|Duckhorn Vineyards":[38.5280,-122.4930],
+ "st-helena-calistoga|Whitehall Lane":[38.4630,-122.4310],
+ "st-helena-calistoga|Heitz Cellar":[38.4960,-122.4640],
+ "st-helena-calistoga|The Restaurant at Meadowood":[38.5190,-122.4570],
+ "st-helena-calistoga|Meadowood Napa Valley":[38.5190,-122.4570],
+ "st-helena-calistoga|Goose & Gander":[38.5060,-122.4700],
+ "st-helena-calistoga|CIA at Greystone":[38.5130,-122.4820],
+ "st-helena-calistoga|The Press":[38.4980,-122.4640],
+ "st-helena-calistoga|Auberge du Soleil":[38.4910,-122.4060],
+ "st-helena-calistoga|Auro at the Four Seasons":[38.5610,-122.5520],
+ "st-helena-calistoga|Four Seasons Resort Napa Valley":[38.5610,-122.5520],
+ "st-helena-calistoga|Farmstead at Long Meadow Ranch":[38.5000,-122.4660],
+ "st-helena-calistoga|Evangeline":[38.5790,-122.5790],
+ "st-helena-calistoga|Susie's Bar":[38.5785,-122.5795],
+ "st-helena-calistoga|Harvest Inn":[38.4960,-122.4620]
+};
+
+/* Wine style, read from Robbie's own notes (wineries only) */
+const RE_R = /\b(cabs?|cabernet|merlots?|pinots?|zins?|tempranillo|gsm|barbera|nebbiolo|petite sirah|red blends?|cab franc|syrah)\b/i;
+const RE_W = /\b(chardonnay|sauvignon blanc|riesling|gewürztraminer|whites?|sémillon)\b/i;
+const RE_B = /\b(sparkling|champagne|bubbles)\b/i;
+function styleTags(note, kind){
+  if(kind!=="wine") return [];
+  const t=[]; if(RE_R.test(note)) t.push("R"); if(RE_W.test(note)) t.push("W"); if(RE_B.test(note)) t.push("B");
+  return t;
+}
+
+function hash(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return h}
+function locate(regionId, groupLabel, name){
+  const key = regionId+"|"+name;
+  let v = key in LOC ? LOC[key] : undefined;
+  if(v===null) return null;
+  if(Array.isArray(v)) return {ll:v, approx:false};
+  const town = TOWN[v || GROUP_TOWN[regionId+"|"+groupLabel] || REGION_TOWN[regionId]];
+  const h = hash(key), a = (h%360)*Math.PI/180, r = 0.0012 + (Math.abs(h)%10)*0.00025;
+  return {ll:[town[0]+Math.sin(a)*r, town[1]+Math.cos(a)*r*1.25], approx:true, town:town[2]};
+}
+
+/* ---------- rendering ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const KIND_LABEL = {wine:"Winery", food:"Restaurant", stay:"Hotel", beer:"Brewery", treat:"Treat"};
+let state = {area:"Sonoma", q:"", tags:new Set()};
+try { const saved = localStorage.getItem("nsg-area"); if (saved==="Sonoma"||saved==="Napa") state.area = saved; } catch(e){}
+
+function hl(text){
+  const t = esc(text);
+  if(!state.q) return t;
+  const q = esc(state.q).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  return t.replace(new RegExp("("+q+")","ig"),"<mark>$1</mark>");
+}
+function matches(item, region, kind){
+  const [name, note="", tags=""] = item;
+  const tagList = tags.split(" ").filter(Boolean).concat(styleTags(note, kind));
+  for (const t of state.tags) if(!tagList.includes(t)) return false;
+  if(!state.q) return true;
+  const hay = (name+" "+note+" "+region.name).toLowerCase();
+  return hay.includes(state.q.toLowerCase());
+}
+function renderItem([name, note="", tags="", url], id, hasPin){
+  const tagHtml = tags.split(" ").filter(Boolean).map(t=>`<span class="tag ${t}">${TAG_LABEL[t]}</span>`).join("");
+  const nm = url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${hl(name)}</a>` : hl(name);
+  const pin = hasPin ? `<button class="pinbtn" data-mid="${id}" title="Show on map" aria-label="Show ${esc(name)} on map">📍</button>` : "";
+  return `<li id="${id}"><span class="name">${nm}</span>${pin}${tagHtml?`<span class="tags">${tagHtml}</span>`:""}${note?`<div class="note">${hl(note)}</div>`:""}</li>`;
+}
+function render(fit=true){
+  const area = GUIDE.find(a=>a.area===state.area);
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.area===state.area));
+  let html = "", nav = "", any = false;
+  const pins = [];
+  for(const r of area.regions){
+    let cards = "";
+    r.sections.forEach((s, si)=>{
+      let body = "";
+      for(const g of s.groups){
+        const items = g.items.filter(i=>matches(i,r,s.kind));
+        if(!items.length) continue;
+        const tag = g.ordered && !state.q && !state.tags.size ? "ol" : "ul";
+        const lis = items.map(it=>{
+          const id = `it-${r.id}-${si}-${slug(it[0])}`;
+          const loc = locate(r.id, g.label||"", it[0]);
+          if(loc) pins.push({id, item:it, kind:s.kind, loc});
+          return renderItem(it, id, !!loc);
+        }).join("");
+        body += (g.label?`<div class="group-label">${esc(g.label)}</div>`:"") + `<${tag} class="items">${lis}</${tag}>`;
+      }
+      if(body) cards += `<div class="card k-${s.kind}"><h3><span class="ic">${ICON[s.kind]}</span>${esc(s.title)}</h3>${body}</div>`;
+    });
+    if(!cards) continue;
+    any = true;
+    nav += `<a href="#${r.id}">${esc(r.name.split(":")[0])}</a>`;
+    html += `<section class="region" id="${r.id}"><h2>${esc(r.name)}</h2>${r.intro?`<p class="intro">${esc(r.intro)}</p>`:""}<div class="cols">${cards}</div></section>`;
+  }
+  $("#content").innerHTML = html;
+  $("#regionnav").innerHTML = nav;
+  $("#regionnav").classList.toggle("hidden", !any);
+  $("#empty").style.display = any ? "none" : "block";
+  updateMap(pins, fit);
+}
+
+/* ---------- map ---------- */
+let map = null, cluster = null, markers = {}, tiles = null;
+function isDark(){
+  const t = document.documentElement.dataset.theme;
+  if(t==="dark") return true; if(t==="light") return false;
+  return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+}
+/* Keyless tile sources. Esri first; if its tiles keep failing, fall back to OpenStreetMap. */
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+const ESRI_ATTR = 'Tiles &copy; <a href="https://www.esri.com">Esri</a> &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors';
+let tileSource = 0, tileErrors = 0;
+function setTiles(){
+  if(!map) return;
+  if(tiles) map.removeLayer(tiles);
+  const dark = isDark();
+  if(tileSource===0){
+    const base = L.tileLayer(ESRI + (dark ? "Canvas/World_Dark_Gray_Base" : "World_Street_Map") + "/MapServer/tile/{z}/{y}/{x}",
+      {maxZoom:19, maxNativeZoom:dark?16:19, attribution:ESRI_ATTR});
+    const layers = [base];
+    if(dark) layers.push(L.tileLayer(ESRI + "Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, maxNativeZoom:16}));
+    tiles = L.layerGroup(layers).addTo(map);
+    tileErrors = 0;
+    base.on("tileerror", ()=>{ if(++tileErrors===6 && tileSource===0){ tileSource=1; setTiles(); } });
+  } else {
+    tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:19,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+  }
+}
+function initMap(){
+  if(!window.L){ $("#mapcard").classList.add("hidden"); return; }
+  map = L.map("map", {scrollWheelZoom:false, zoomControl:true}).setView([38.40,-122.55], 10);
+  setTiles();
+  map.on("focus click", ()=>map.scrollWheelZoom.enable());
+  map.on("mouseout", ()=>map.scrollWheelZoom.disable());
+  cluster = L.markerClusterGroup ? L.markerClusterGroup({showCoverageOnHover:false, maxClusterRadius:40, spiderfyOnMaxZoom:true}) : L.layerGroup();
+  map.addLayer(cluster);
+  map.on("popupopen", e=>{
+    const btn = e.popup.getElement().querySelector(".pop-go");
+    if(btn) btn.addEventListener("click", ()=>goToItem(btn.dataset.id));
+  });
+  if(window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", setTiles);
+  $("#mapreset").addEventListener("click", ()=>fitAll());
+}
+function fitAll(){
+  if(!map) return;
+  const layers = cluster.getLayers();
+  if(layers.length) map.fitBounds(L.featureGroup(layers).getBounds(), {padding:[30,30], maxZoom:14});
+}
+function updateMap(pins, fit){
+  if(!map) return;
+  cluster.clearLayers(); markers = {};
+  for(const p of pins){
+    const [name, note=""] = p.item;
+    const icon = L.divIcon({className:"", html:`<div class="pin k-${p.kind}${p.loc.approx?" approx":""}"></div>`, iconSize:[16,16], iconAnchor:[8,8], popupAnchor:[0,-8]});
+    const meta = KIND_LABEL[p.kind] + (p.loc.approx ? ` · approximate pin (${esc(p.loc.town)})` : "");
+    const m = L.marker(p.loc.ll, {icon, title:name, riseOnHover:true})
+      .bindPopup(`<div class="pop-name">${esc(name)}</div>${note?`<div class="pop-note">${esc(note)}</div>`:""}<div class="pop-meta">${meta}</div><button class="pop-go" data-id="${p.id}">View in list ↓</button>`);
+    markers[p.id] = m; cluster.addLayer(m);
+  }
+  if(fit) fitAll();
+}
+function goToItem(id){
+  const li = document.getElementById(id);
+  if(!li) return;
+  li.scrollIntoView({behavior:"smooth", block:"center"});
+  li.classList.remove("flash"); void li.offsetWidth; li.classList.add("flash");
+}
+function showOnMap(id){
+  const m = markers[id]; if(!m) return;
+  $("#mapcard").scrollIntoView({behavior:"smooth", block:"start"});
+  const open = ()=>{ map.setView(m.getLatLng(), Math.max(map.getZoom(), 14)); m.openPopup(); };
+  if(cluster.zoomToShowLayer) cluster.zoomToShowLayer(m, open); else open();
+}
+
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
+  state.area = b.dataset.area;
+  try { localStorage.setItem("nsg-area", state.area); } catch(e){}
+  render(); window.scrollTo({top:0});
+}));
+let qTimer;
+$("#q").addEventListener("input", e=>{ state.q = e.target.value.trim(); clearTimeout(qTimer); qTimer=setTimeout(()=>render(), 150); });
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+  const t = c.dataset.tag;
+  state.tags.has(t) ? state.tags.delete(t) : state.tags.add(t);
+  c.setAttribute("aria-pressed", state.tags.has(t));
+  render();
+}));
+$("#content").addEventListener("click", e=>{
+  const b = e.target.closest(".pinbtn"); if(b) showOnMap(b.dataset.mid);
+});
+initMap();
+render();
+</script>
+<script data-goatcounter="https://phaduman.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
